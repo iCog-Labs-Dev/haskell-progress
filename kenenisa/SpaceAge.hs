@@ -7,7 +7,11 @@ data Planet = Mercury
             | Saturn
             | Uranus
             | Neptune
-earthyears seconds = seconds / 31557600.0
+
+earthYears :: Fractional a => a -> a
+earthYears seconds = seconds / 31557600.0
+
+planetFactor :: Fractional a => Planet -> a
 planetFactor planet = case planet of 
                         Mercury -> 0.2408467
                         Venus -> 0.61519726
@@ -17,5 +21,6 @@ planetFactor planet = case planet of
                         Saturn -> 29.447498
                         Uranus -> 84.016846
                         Neptune -> 164.79132
+
 ageOn :: Planet -> Float -> Float
-ageOn planet seconds = (earthyears seconds)/planetFactor planet
+ageOn planet seconds = earthYears seconds / planetFactor planet

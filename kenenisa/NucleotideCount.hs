@@ -2,12 +2,16 @@ module DNA (nucleotideCounts, Nucleotide(..)) where
 import Data.Map (Map)
 import qualified Data.Map as Map
 data Nucleotide = A | C | G | T deriving (Eq, Ord, Show)
+
 nucleotide :: [Char]
 nucleotide = "ATGC"
+
+isValidSeq :: [Char] -> Bool
 isValidSeq [] = True
 isValidSeq (x : xs) 
     | x `notElem` nucleotide = False
     | otherwise = isValidSeq xs
+
 produceSeq :: Num b => [Char] -> [(Nucleotide, b)] -> [(Nucleotide, b)]
 produceSeq [] seq = seq
 produceSeq (x:xs) seq@[a,c,g,t] 

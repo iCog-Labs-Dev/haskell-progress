@@ -1,5 +1,6 @@
 
 module SumOfMultiples (sumOfMultiples) where
+    
 sumOfMultiples :: [Integer] -> Integer -> Integer
 sumOfMultiples factors limit = sum [num | num <- [1..limit],num < limit, isFactor num factors]
                                 where isFactor n xs = case xs of [] -> False
