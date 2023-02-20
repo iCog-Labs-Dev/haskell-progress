@@ -4,6 +4,7 @@ digits :: [Char]
 digits = ['0'..'9']
 
 cleanUp :: [Char] -> [Char]
+cleanUp [] = []
 cleanUp (x:xs) | x `elem` digits = x : cleanUp xs
                | otherwise = cleanUp xs
 checkValid :: [Char] -> Bool
