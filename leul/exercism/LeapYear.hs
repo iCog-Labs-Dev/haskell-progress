@@ -1,3 +1,4 @@
+-- solution for https://exercism.org/tracks/haskell/exercises/leap
 module LeapYear (isLeapYear) where
 
 isLeapYear :: Integer -> Bool
