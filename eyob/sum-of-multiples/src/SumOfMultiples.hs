@@ -6,6 +6,7 @@ multiples :: Integer -> [Integer]
 multiples n = map (* n) [1 ..]
 
 multiplesUpTo :: Integer -> Integer -> [Integer]
+multiplesUpTo 0 _ = [0]
 multiplesUpTo n limit = takeWhile (< limit) (multiples n)
 
 getMultiplesOf :: [Integer] -> Integer -> [Integer]

@@ -30,12 +30,12 @@ version :: Version
 version = Version [1,5,0,10] []
 bindir, libdir, dynlibdir, datadir, libexecdir, sysconfdir :: FilePath
 
-bindir     = "C:\\Users\\Ethio\\Exercism\\haskell\\sum-of-multiples\\.stack-work\\install\\59205620\\bin"
-libdir     = "C:\\Users\\Ethio\\Exercism\\haskell\\sum-of-multiples\\.stack-work\\install\\59205620\\lib\\x86_64-windows-ghc-9.0.2\\sum-of-multiples-1.5.0.10-95yflf3ZsQqJMndOx0ZFue"
-dynlibdir  = "C:\\Users\\Ethio\\Exercism\\haskell\\sum-of-multiples\\.stack-work\\install\\59205620\\lib\\x86_64-windows-ghc-9.0.2"
-datadir    = "C:\\Users\\Ethio\\Exercism\\haskell\\sum-of-multiples\\.stack-work\\install\\59205620\\share\\x86_64-windows-ghc-9.0.2\\sum-of-multiples-1.5.0.10"
-libexecdir = "C:\\Users\\Ethio\\Exercism\\haskell\\sum-of-multiples\\.stack-work\\install\\59205620\\libexec\\x86_64-windows-ghc-9.0.2\\sum-of-multiples-1.5.0.10"
-sysconfdir = "C:\\Users\\Ethio\\Exercism\\haskell\\sum-of-multiples\\.stack-work\\install\\59205620\\etc"
+bindir     = "C:\\Users\\Ethio\\Exercism\\haskell\\haskell-progress\\eyob\\sum-of-multiples\\.stack-work\\install\\59205620\\bin"
+libdir     = "C:\\Users\\Ethio\\Exercism\\haskell\\haskell-progress\\eyob\\sum-of-multiples\\.stack-work\\install\\59205620\\lib\\x86_64-windows-ghc-9.0.2\\sum-of-multiples-1.5.0.10-95yflf3ZsQqJMndOx0ZFue"
+dynlibdir  = "C:\\Users\\Ethio\\Exercism\\haskell\\haskell-progress\\eyob\\sum-of-multiples\\.stack-work\\install\\59205620\\lib\\x86_64-windows-ghc-9.0.2"
+datadir    = "C:\\Users\\Ethio\\Exercism\\haskell\\haskell-progress\\eyob\\sum-of-multiples\\.stack-work\\install\\59205620\\share\\x86_64-windows-ghc-9.0.2\\sum-of-multiples-1.5.0.10"
+libexecdir = "C:\\Users\\Ethio\\Exercism\\haskell\\haskell-progress\\eyob\\sum-of-multiples\\.stack-work\\install\\59205620\\libexec\\x86_64-windows-ghc-9.0.2\\sum-of-multiples-1.5.0.10"
+sysconfdir = "C:\\Users\\Ethio\\Exercism\\haskell\\haskell-progress\\eyob\\sum-of-multiples\\.stack-work\\install\\59205620\\etc"
 
 getBinDir, getLibDir, getDynLibDir, getDataDir, getLibexecDir, getSysconfDir :: IO FilePath
 getBinDir = catchIO (getEnv "sum_of_multiples_bindir") (\_ -> return bindir)
