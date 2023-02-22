@@ -1,19 +1,23 @@
 {-
     A command line program that calculates a reverse polish notaion math problem.
-    note that it does not validate the notaion so try to enter a valid notation.
+    it does not validate the notaion so try to enter a valid notation.
+    this program is not an end product as it produces an error for more complicated
+    inputs. it will be updated once solved.
+        the error: "Exception: Prelude.tail: empty list"
+        example input: "10 6 9 3 + -11 * / * 17 + 5 +"
 -}
 
 main = do
-  begin
+  welcome
   cliLoop
 
-begin = do
+welcome = do
   putStrLn "Welcome!!! the reverse polish reverse notaion calculator,\nplease enter a valid polish notaion expression."
 
 cliLoop = do
   putStr "--> "
   inp <- getLine
-  print (inputLoop (words inp) [])
+  print (calculate (words inp) [])
   cliLoop
 
 doOperation :: Char -> Float -> Float -> Float
@@ -22,22 +26,36 @@ doOperation '-' x y = x - y
 doOperation '*' x y = x * y
 doOperation '/' x y = x / y
 
--- parseInp :: String -> Maybe Int
-
-inputLoop :: [String] -> [Float] -> Float
--- inputLoop inp [] =
---     inputLoop inp
-inputLoop [] a = head a
-inputLoop inp operands =
-  -- if the head is integer call lup with arguments # (tail of inp) head:[prev]#
-  -- else if it is an operator do operation and call lup with arguments # (tail of inp) answer:[prev]#
-  -- 4 13 5 / +
-  if head (head inp) `notElem` "+-*/"
-    then inputLoop (tail inp) ((read (head inp) :: Float) : operands)
-    else inputLoop (tail inp) (result : tail (tail operands))
+calculate :: [String] -> [Float] -> Float
+calculate [] a = head a
+calculate inp operands =
+  if (head (head inp) `notElem` "+-*/") && (length (head inp) == 1)
+    then calculate (tail inp) ((read (head inp) :: Float) : operands)
+    else calculate (tail inp) (result : tail (tail operands))
   where
     result =
       doOperation
         (head $ head inp)
         (head (tail operands))
         (head operands)
+
+-- 10 6 9 3 + -11 * / * 17 + 5 +
+
+{-
+
+6 9 3 + -11 * / * 17 + 5 +    [10]
+9 3 + -11 * / * 17 + 5 +      [6, 10]
+3 + -11 * / * 17 + 5 +        [9, 6, 10]
++ -11 * / * 17 + 5 +          [3, 9, 6, 10]
+-11 * / * 17 + 5 +            [12, 6, 10]          do 9 + 3 = 12
+\* / * 17 + 5 +               [-11, 12, 6, 10]
+/ * 17 + 5 +                  [-132, 6, 10]        do 12 * -11 = -132
+\* 17 + 5 +                   [-0.0454 , 10]       do 6 / -132 = -0.0454
+17 + 5 +                      [-0.454]             do -0.0454 * 10 = -0.454
++ 5 +                         [17, -0.454]
+5 +                           [16.95]              do 17 + -0.454 = 16.95
++                             [5, 16.95]
+[]                            [21.95]              do 5 + 16.95 == 21.95
+
+21.95
+-}
