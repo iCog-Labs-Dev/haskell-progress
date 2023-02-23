@@ -1,3 +1,5 @@
+-- https://exercism.org/tracks/haskell/exercises/collatz-conjecture
+
 module CollatzConjecture (collatz) where
 
 collatzList :: Integer -> [Integer]
