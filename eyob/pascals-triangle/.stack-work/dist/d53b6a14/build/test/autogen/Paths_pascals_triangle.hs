@@ -30,12 +30,12 @@ version :: Version
 version = Version [1,5,0,9] []
 bindir, libdir, dynlibdir, datadir, libexecdir, sysconfdir :: FilePath
 
-bindir     = "C:\\Users\\Ethio\\Exercism\\haskell\\pascals-triangle\\.stack-work\\install\\59205620\\bin"
-libdir     = "C:\\Users\\Ethio\\Exercism\\haskell\\pascals-triangle\\.stack-work\\install\\59205620\\lib\\x86_64-windows-ghc-9.0.2\\pascals-triangle-1.5.0.9-Fi41ZVyU05D32arweZzMUw-test"
-dynlibdir  = "C:\\Users\\Ethio\\Exercism\\haskell\\pascals-triangle\\.stack-work\\install\\59205620\\lib\\x86_64-windows-ghc-9.0.2"
-datadir    = "C:\\Users\\Ethio\\Exercism\\haskell\\pascals-triangle\\.stack-work\\install\\59205620\\share\\x86_64-windows-ghc-9.0.2\\pascals-triangle-1.5.0.9"
-libexecdir = "C:\\Users\\Ethio\\Exercism\\haskell\\pascals-triangle\\.stack-work\\install\\59205620\\libexec\\x86_64-windows-ghc-9.0.2\\pascals-triangle-1.5.0.9"
-sysconfdir = "C:\\Users\\Ethio\\Exercism\\haskell\\pascals-triangle\\.stack-work\\install\\59205620\\etc"
+bindir     = "C:\\Users\\Ethio\\Exercism\\haskell\\haskell-progress\\eyob\\pascals-triangle\\.stack-work\\install\\59205620\\bin"
+libdir     = "C:\\Users\\Ethio\\Exercism\\haskell\\haskell-progress\\eyob\\pascals-triangle\\.stack-work\\install\\59205620\\lib\\x86_64-windows-ghc-9.0.2\\pascals-triangle-1.5.0.9-Fi41ZVyU05D32arweZzMUw-test"
+dynlibdir  = "C:\\Users\\Ethio\\Exercism\\haskell\\haskell-progress\\eyob\\pascals-triangle\\.stack-work\\install\\59205620\\lib\\x86_64-windows-ghc-9.0.2"
+datadir    = "C:\\Users\\Ethio\\Exercism\\haskell\\haskell-progress\\eyob\\pascals-triangle\\.stack-work\\install\\59205620\\share\\x86_64-windows-ghc-9.0.2\\pascals-triangle-1.5.0.9"
+libexecdir = "C:\\Users\\Ethio\\Exercism\\haskell\\haskell-progress\\eyob\\pascals-triangle\\.stack-work\\install\\59205620\\libexec\\x86_64-windows-ghc-9.0.2\\pascals-triangle-1.5.0.9"
+sysconfdir = "C:\\Users\\Ethio\\Exercism\\haskell\\haskell-progress\\eyob\\pascals-triangle\\.stack-work\\install\\59205620\\etc"
 
 getBinDir, getLibDir, getDynLibDir, getDataDir, getLibexecDir, getSysconfDir :: IO FilePath
 getBinDir = catchIO (getEnv "pascals_triangle_bindir") (\_ -> return bindir)
