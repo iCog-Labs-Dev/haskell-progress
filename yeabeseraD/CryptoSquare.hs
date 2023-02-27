@@ -15,7 +15,7 @@ normalizeText :: String -> String
 normalizeText xs = map toLower (filter isAlphaNum xs)
 
 decideRowAndCol :: (Integral a) => a -> (a, a)
-decideRowAndCol n = (floor x, ceiling x)
+decideRowAndCol n = (round x, round x)
     where x = sqrt (fromIntegral n)
 
 fillSpace :: String->(Int, Int)->String
