@@ -2,8 +2,12 @@ module DNA (toRNA) where
 
 toRNA :: String -> Either Char String
 toRNA [] = Right []
-toRNA ('G':xs) =  ('C':) <$> toRNA xs
-toRNA ('C':xs) =  ('G':) <$> toRNA xs
-toRNA ('T':xs) =  ('A':) <$> toRNA xs
-toRNA ('A':xs) =  ('U':) <$> toRNA xs
-toRNA (x:xs) = Left x
+toRNA (x:xs)
+    | x `notElem` "GCTA" = Left x
+    | otherwise = Right (map change (x:xs))
+
+change :: Char -> Char
+change 'G' = 'C'
+change 'C' = 'G'
+change 'T' = 'A'
+change 'A' = 'U'
