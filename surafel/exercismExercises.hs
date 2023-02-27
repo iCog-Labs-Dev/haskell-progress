@@ -1,3 +1,4 @@
+import Data.Char (isSpace, isUpper, toLower)
 import Data.Char qualified as Char
 import Data.Set qualified as Set
 import Data.String qualified as Set
@@ -43,8 +44,41 @@ ageOn planet seconds
 -- https://exercism.org/tracks/haskell/exercises/pangram
 
 -- without using Data.Set
--- working on it ...
+isPangram :: String -> Bool
+isPangram text =
+  foldl
+    ( \acc x ->
+        if not acc
+          then acc
+          else x `elem` map toLower text
+    )
+    True
+    ['a' .. 'z']
 
 -- using Data.Set
-isPangram :: String -> Bool
-isPangram text = Set.size (Set.delete ' ' (Set.fromList (map Char.toLower text))) == 26
+isPangram' :: String -> Bool
+isPangram' text = Set.size (Set.delete ' ' (Set.fromList (map Char.toLower text))) == 26
+
+-- Bob
+--
+
+responseFor :: String -> String
+responseFor xs
+  | all isSpace xs || null xs = "Fine. Be that way!"
+  | qmExists xs = handleQM xs
+  | areUpper xs = "Whoa, chill out!"
+  | otherwise = "Whatever."
+  where
+    qmExists xs = last (filter (not . isSpace) xs) == '?'
+    handleQM xs
+      | areUpper xs = "Calm down, I know what I'm doing!"
+      | otherwise = "Sure."
+    areUpper xs =
+      all
+        isUpper
+        ( if filtered /= ""
+            then filtered
+            else xs
+        )
+      where
+        filtered = filter (`elem` (['a' .. 'z'] ++ ['A' .. 'Z'])) xs
