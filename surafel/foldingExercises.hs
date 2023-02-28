@@ -1,5 +1,5 @@
 {-
-Basic prelude functions implemented by fold functions.
+Basic prelude and some other functions functions implemented by fold functions.
 -}
 
 -- length of a list
