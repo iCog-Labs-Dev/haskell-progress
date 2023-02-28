@@ -16,11 +16,11 @@ calculator xs = calculate xs []
 
 
 calculate :: [String] -> [Float] -> [Float]
-calculate [op] (op1:op2:_) = [performOperation op1 op2 op]
+calculate [op] (op2:op1:_) = [performOperation op1 op2 op]
 calculate xs stack
     | current `elem` operations = calculate (tail xs) ((let a = stack !! 1
                                                             b = head stack
-                                                       in performOperation a b current) : stack)
+                                                       in performOperation a b current) : tail (tail stack))
     | otherwise = calculate (tail xs) (read current : stack)
     where current = head xs
 
