@@ -19,4 +19,4 @@ main = do
     "q" -> putStrLn "Bye!"
     x -> putStrLn "Invalid input."
 
-  when (op /= "q")  do main
+  when (op /= "q")  $ do main
