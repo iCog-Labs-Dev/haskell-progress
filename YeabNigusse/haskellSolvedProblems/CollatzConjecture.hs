@@ -1,10 +1,11 @@
 module CollatzConjecture (collatz) where
 
-collatz :: Integer -> Maybe Int
+collatz :: Integer -> Maybe Integer
 collatz n
   | n <= 0    = Nothing
   | n == 1    = Just 0
-  | otherwise = Just (returnLength n)
+  | otherwise = returnLength n
+  
 
 coll :: Integer -> [Integer]
 coll n 
@@ -13,5 +14,7 @@ coll n
   | even n = n: coll (n `div` 2)
   | odd n  = n: coll (n*3 + 1)
 
-returnLength :: Integer -> Int
-returnLength n = length (coll n) - 1
+returnLength :: Integer -> Maybe Integer
+returnLength n 
+          | n > 1 = Just (fromIntegral (length (coll n) - 1))
+          | otherwise = Nothing
