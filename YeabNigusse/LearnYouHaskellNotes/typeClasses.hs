@@ -1,3 +1,5 @@
+import qualified Data.Map as Map
+
 -- LET US WORK ON OUR OWN TYPECLASSES
 
 data Shape = Circle Float Float Float | Rectangle Float Float Float Float deriving (Show)
@@ -111,3 +113,72 @@ Monday--}
 
 -- TYPE SYNONYMS
 
+data DormState = Taken | Free deriving(Show, Eq)
+
+type Code = String
+
+type DormMap = Map.Map Int (DormState, Code)
+
+dormLookUp :: Int -> DormMap -> Either String Code
+dormLookUp dormNumber map = case Map.lookup dormNumber map of  
+                            Nothing -> Left $ "Dorm Number " ++ show dormNumber ++ " Doesn't Exist!"
+                            Just(state, code) -> if state /= Taken then Right code 
+                            else Left $ "Locker " ++ show dormNumber ++ " is alredy taken!"
+dorms :: DormMap  
+dorms = Map.fromList   
+                    [(100,(Taken,"ZD39I"))  
+                    ,(101,(Free,"JAH3I"))  
+                    ,(103,(Free,"IQSA9"))  
+                    ,(105,(Free,"QOTSA"))  
+                    ,(109,(Taken,"893JJ"))  
+                    ,(110,(Taken,"99292"))]  
+
+-- RECURSIVE DATA STRUCTURE
+-- LET US IMPLEMENT BINERY SEARCH TREE
+
+data Tree a = EmptyTree | Node a (Tree a) (Tree a) deriving(Show, Read, Eq)
+
+singlton :: (Ord a) => a -> Tree a -> Tree a
+singlton x EmptyTree = Node x EmptyTree EmptyTree
+
+insertTree :: (Ord a) => a -> Tree a -> Tree a
+insertTree x EmptyTree = singlton x EmptyTree
+insertTree x (Node a left right)
+           | x == a = Node x left right
+           | x < a = Node a (insertTree x left) right 
+           | x > a =  Node a left (insertTree x right)
+
+findElem :: (Ord a) => a -> Tree a -> Bool
+findElem x EmptyTree = False
+findElem x (Node a left right)
+           | x == a = True
+           | x < a = findElem x left
+           | x > a = findElem x right
+
+{--ghci> let nums = [8,6,4,1,7,3,5]  
+ghci> let numsTree = foldr treeInsert EmptyTree nums  
+ghci> let numsTree = foldr insertTree  EmptyTree nums
+ghci> numsTree
+Node 5 (Node 3 (Node 1 EmptyTree EmptyTree) (Node 4 EmptyTree EmptyTree)) (Node 7 (Node 6 EmptyTree EmptyTree) (Node 8 EmptyTree EmptyTree))
+ghci> 8 `findElem` numsTree
+True--}
+
+-- TYPECLASSES 102
+-- let us make our own typeclass to be an instance of another typeclass by implementing their function
+
+data TraficLight = Red | Yellow | Green
+
+instance Eq TraficLight where
+    Red == Red = True
+    Yellow == Yellow = True
+    Green == Green = True
+    _ == _ = False
+
+instance Show TraficLight where
+    show Red = "Red light"
+    show Yellow = "Yellow light"
+    show Green =  "Green light"
+--ghci> [Red, Yellow, Green]
+--[Red light,Yellow light,Green light]
+
+-- A YES-NO TYPECLASSES
