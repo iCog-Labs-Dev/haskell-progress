@@ -150,3 +150,44 @@ describeList2 xs = "The list is " ++ what xs
     where what [] = "empty."  
           what [x] = "a singleton list."  
           what xs = "a longer list."  
+
+
+-- ****** InputOutputHK
+-- ** Practice on Pattern Matching 
+doubleEven :: [Int] -> [Int]
+doubleEven [] = []
+doubleEven [x] = [x]
+doubleEven (x:y:xs) = x : (y*2) : doubleEven xs
+
+someOtherFunc :: a -> a
+listLength :: [a] -> String
+someOtherFunc x = x
+listLength li = case li of 
+                    [] -> "Empty" ++ elem
+                    [a] -> "One" ++ elem
+                    [a,b] -> "Two" ++ elem -- (a:[b]) , (a:b:[])
+                    (a:b:[c]) -> "Three" ++ elem
+                    (a:b:c:d:[]) -> "Four" ++ elem
+                    (a:rest) -> "Five or more" ++ elem
+
+    where elem = " Element(s)"
+
+firstAndThird :: [Int] -> Maybe [Int]
+firstAndThird (a:_:b:_) = Just [a,b] -- Use '_' for variables you don't use 
+firstAndThird _ = Nothing
+
+initials :: String -> String -> String
+initials (f:_) (l:_) = (f:['.']) ++ [l] ++ "."
+initials _ _ = "Say Whaa!?"
+
+-- ** Pattern matching in tuples
+-- We can only extract elements from a 2-element tuple using 'fst' and 'snd' functions... until now:
+thr :: (a,b,c) -> c
+thr (_,_,c) = c 
+
+checkZeros :: (Int, Int, Int) -> String -- (Int a) => (a,a,a) ... this brings an error
+checkZeros triple = "The triple " ++ show triple ++ " has " ++
+    case triple of (0,_,_) -> "zero as its first element."
+                   (_,0,_) -> "zero as its second element."
+                   (_,_,0) -> "zero as its third element."
+                   _       -> "no zeroes."
