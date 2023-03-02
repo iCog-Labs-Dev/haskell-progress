@@ -84,7 +84,7 @@ numLengthChains :: Int
 numLengthChains = length (filter (\x -> length x > 15) (map' chain [1,2..100]))
 -- we use lambadas to write a functio that we use onece or twice 
 
-
+      
 addthree :: [Integer]
 addthree = map (\x -> x+3) [1,2,3,4]
 
