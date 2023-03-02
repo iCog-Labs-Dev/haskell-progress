@@ -33,6 +33,6 @@ takeTillIndex (Node val next) index = Node val (takeTillIndex next (index - 1))
 
 insertAtIndex :: a -> Int -> LinkedList a -> LinkedList a
 insertAtIndex value _ Empty = Empty
-insertAtIndex value 0 (Node val next)= Node val (insertBefore value next)
+insertAtIndex value 0 node = insertBefore value node
 insertAtIndex value index (Node val next) = Node val (insertAtIndex value (index - 1) next)
 
