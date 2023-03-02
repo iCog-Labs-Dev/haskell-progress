@@ -1,3 +1,5 @@
+-- https://exercism.org/tracks/haskell/exercises/strain
+
 module Strain (keep, discard) where
 
 discard :: (a -> Bool) -> [a] -> [a]
