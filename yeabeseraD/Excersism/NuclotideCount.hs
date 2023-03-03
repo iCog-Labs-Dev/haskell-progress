@@ -11,7 +11,7 @@ nucleotideCounts xs = if isValidDNA xs
         else Left "error"
 
 isValidDNA :: String -> Bool
-isValidDNA = all (\x -> x `elem` "ACGT")
+isValidDNA = all (`elem` "ACGT")
 
 sequenceDNA :: String -> Map Nucleotide Int
 sequenceDNA xs= foldr (\(k,v) acc -> insert (read k :: Nucleotide) v acc) empty dnaList
