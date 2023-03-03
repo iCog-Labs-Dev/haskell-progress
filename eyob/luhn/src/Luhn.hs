@@ -1,6 +1,6 @@
 module Luhn (isValid) where
 
-import Data.Char (isDigit, isSpace)
+import Data.Char (digitToInt, isDigit, isSpace)
 
 stripSpaces :: String -> String
 stripSpaces = filter (not . isSpace)
@@ -20,7 +20,7 @@ doubleEven (x : y : xs) = x : calcDouble : doubleEven xs
 
 isValid :: String -> Bool
 isValid n
-  | isStringGRTTwo n' && hasOnlyDigits n' = sum (doubleEven (map (\x -> read [x] :: Int) $ reverse n')) `mod` 10 == 0
+  | isStringGRTTwo n' && hasOnlyDigits n' = sum (doubleEven (map digitToInt $ reverse n')) `mod` 10 == 0
   | otherwise = False
   where
     n' = stripSpaces n
