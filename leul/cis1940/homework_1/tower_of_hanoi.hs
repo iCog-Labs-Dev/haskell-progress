@@ -3,6 +3,7 @@
 type Peg = String
 type Move = (String, String)
 
+
 hanoi :: Integer -> Peg -> Peg -> Peg -> [Move]
 hanoi 1 a b c = [(a, b)]
 hanoi 2 a b c = [(a, c), (a, b), (c, b)]
