@@ -1,19 +1,29 @@
 module Luhn (isValid) where
-import Data.Char (isSpace, isLetter)
+import Data.Char (isSpace, isNumber, isDigit, digitToInt)
 
 isValid :: String -> Bool
-isValid n
-    | length (filtereN n) < 2 = False
-    | not (all isLetter n ) = False
-    | otherwise = validate ( filtereN $ unwords changedN)
-    where filtereN = filter (not . isSpace)
-          changedN = map convert (words n)
+isValid n 
+    | hasValidLength n' && isAllDigit n' = sum n'' `mod` 10 == 0
+    | otherwise = False
+    where n' = stripSpaces n
+          n'' =convertDigit $ reverse $ toDigit n'
 
-convert :: String -> String
-convert (a:x:b:y)
-        | read [x] > 9 = convert (a: head (show (read [x] - 9)) : b : y)
-        | read y > 9 = convert (a: x : b : show (read y - 9))
-        | otherwise = convert(a: head (show (read [x] * 2)):b: show (read y * 2))
+hasValidLength :: String -> Bool
+hasValidLength a = length a > 1
 
-validate :: String -> Bool
-validate xs = sum (map (\x -> read [x]) xs) `mod` 10 == 0
+stripSpaces :: String -> String
+stripSpaces = filter (not . isSpace)
+
+isAllDigit :: String -> Bool
+isAllDigit = all isDigit
+
+toDigit :: String -> [Int]
+toDigit = map digitToInt
+
+convertDigit :: [Int] -> [Int]
+convertDigit [] = []
+convertDigit [x] = [x]
+convertDigit (x:y:xs) = x : double y : convertDigit xs
+    where double x = if x * 2 > 9
+                        then x * 2 - 9
+                        else x * 2
