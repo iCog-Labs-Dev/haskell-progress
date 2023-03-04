@@ -175,6 +175,7 @@ instance Eq TraficLight where
     _ == _ = False
 
 instance Show TraficLight where
+    show :: TraficLight -> String
     show Red = "Red light"
     show Yellow = "Yellow light"
     show Green =  "Green light"
@@ -182,3 +183,7 @@ instance Show TraficLight where
 --[Red light,Yellow light,Green light]
 
 -- A YES-NO TYPECLASSES
+
+-- The Functor typeclass
+class Functor f where
+    fmap :: (a -> b) -> f a -> f b
