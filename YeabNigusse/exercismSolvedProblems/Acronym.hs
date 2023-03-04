@@ -1,21 +1,12 @@
 module Acronym (abbreviate) where
-import Data.Maybe (maybeToList)
-import Data.Char (isAlpha, isSpace, toUpper)
+import Data.Char (isAlpha, isSpace, toUpper, isUpper, isLower)
 
 abbreviate :: String -> String
-abbreviate xs = ""
+abbreviate xs = filter (not.isSpace)(alphaOnly (myAcro xs))
 
 alphaOnly :: String -> String
-alphaOnly = map (\c -> if isAlpha c || isSpace c then c else ' ')
+alphaOnly = map (\c -> if isAlpha c || isSpace c || c == '\''then c else ' ')
 
-toList :: String -> [String]
-toList  = words
-
-toString :: [String] -> String
-toString = unwords
-
---filterAcro :: String -> String
---filterAcro  = foldl (\accu x -> accu ++ take 1 x) "" . toString (toList)
-
-myAcro :: String -> [a]
-myAcro xs = [c | c <- xs, c == ' ' ++ c] -- filtering characters by checking whether a character come after space or not
+myAcro :: String -> String
+myAcro = map toUpper . myAcro' . alphaOnly
+    where myAcro' xs = [c | (c, prev) <- zip xs (' ':xs), prev == ' ' || isUpper c && isLower prev]
