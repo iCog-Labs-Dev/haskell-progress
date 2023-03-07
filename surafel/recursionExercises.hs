@@ -39,4 +39,23 @@ repeat' x = x : repeat' x
 -- coming soon
 
 -- quick sort
--- coming soon
+
+quickSort [] = []
+quickSort (x : xs) = quickSort left ++ [x] ++ quickSort right
+  where
+    left = filter (< x) xs
+    right = filter (> x) xs
+
+-- binary trees
+data Tree v = EmptyTree | Node v (Tree v) (Tree v) deriving (Show, Read, Eq)
+
+createTree :: Ord a => [a] -> Tree a
+createTree [] = EmptyTree
+createTree xs = Node (middle xs) (createTree (left xs)) (createTree (right xs))
+  where
+    middle :: [a] -> a
+    middle xs = xs !! (length xs `div` 2)
+    left :: Ord a => [a] -> [a]
+    left xs = filter (< middle xs) xs
+    right :: Ord a => [a] -> [a]
+    right xs = filter (> middle xs) xs
