@@ -1,4 +1,5 @@
 import Data.Char(toUpper)
+import Control.Monad 
 --HELLO WORLD
 
 --main = putStrLn "Hello world"
@@ -67,6 +68,7 @@ putStr' [] = return ()
 putStr' (x:xs) = do
     putChar x
     putStr' xs
+{--
 main :: IO ()
 main = do
     c <- getChar
@@ -75,4 +77,25 @@ main = do
             putChar c
             main
         else
-            return ()
+            return () --hello sir
+                      --hello
+--}
+{--
+main :: IO ()
+main = do
+    putStrLn "enter number"
+    number <- getLine
+    print (read number :: Int)
+--}
+{--
+main :: IO ()
+main = do 
+    c <- getChar
+    when (c /= ' ')$ do
+        putChar c
+        main
+--}
+main :: IO ()
+main = do
+    myList <- sequence [getLine, getLine, getLine]
+    print myList
