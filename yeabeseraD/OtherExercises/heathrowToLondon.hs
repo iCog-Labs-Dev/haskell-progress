@@ -14,10 +14,12 @@ roadPath (pathA, pathB) (Section a b c) =
         crossPathToA = pathToB + b + c
         pathToNextB = pathToB + b
         crossPathToB = pathToA + a + c
-        nextPathToA = if pathToNextA <= crossPathToA then (A,a):pathA
-                                                     else (C,c):(B,b):pathB
-        nextPathToB = if pathToNextB <= crossPathToB then (B,b):pathB
-                                                     else (C,c):(A,a):pathB 
+        nextPathToA = if pathToNextA <= crossPathToA 
+                        then (A,a):pathA
+                        else (C,c):(B,b):pathB
+        nextPathToB = if pathToNextB <= crossPathToB 
+                        then (B,b):pathB
+                        else (C,c):(A,a):pathA
     in (nextPathToA, nextPathToB)
 
 optimalPath :: RoadSystem -> Path
@@ -30,11 +32,12 @@ optimalPath roadSystem =
 groupByN :: Int -> [a] -> [[a]]
 groupByN 0 _ = undefined
 groupByN _ [] = []
-groupByN x xs = take x : groupByN x $ drop xs
+groupByN n xs = take n xs : groupByN n (drop n xs)
 
 main = do
     contents <- getContents
-    let roadSystem = map (\[a,b,c] -> Section a b c) $ lines contents
+    let threes = groupByN 3 (map read $ lines contents)
+        roadSystem = map (\[a,b,c] -> Section a b c) threes
         bestPath = optimalPath roadSystem
         pathString = concatMap (show . fst) bestPath
         pathCost = sum $ map snd bestPath
