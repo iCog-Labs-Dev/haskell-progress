@@ -232,6 +232,7 @@ main = do (fileName:_) <- getArgs
                       putStrLn $ "The file has " ++ show (length (lines contents)) ++ " lines!"  
               else do putStrLn "The file doesn't exist!"
 --}
+{--
 main :: t
 main = toTry `catch` handler  
               
@@ -242,3 +243,4 @@ toTry = do (fileName:_) <- getArgs
   
 handler :: IOError -> IO ()  
 handler e = putStrLn "Whoops, had some trouble!" 
+--}
