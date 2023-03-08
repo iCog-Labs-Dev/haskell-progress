@@ -1,4 +1,5 @@
-import Data.Char(toUpper)
+import Data.Char
+import System.IO
 import Control.Monad 
 --HELLO WORLD
 
@@ -30,15 +31,17 @@ main = do
         smallName = map toUpper lastName
     putStrLn $ "hey " ++ bigName  ++" "++ smallName ++ " How are you?"
 --}
+
 {--
 main :: IO b
 main = do
     line <- getLine
     if null line then return () else do putStrLn $ reverseWord line
     main
+--}
 reverseWord :: String -> String
 reverseWord = unwords . map reverse .words
---}
+
 {--
 main :: IO ()
 main = do  
@@ -49,13 +52,15 @@ main = do
     return 4  
     putStrLn line  --All these returns do is that they make I/O actions that don't really do anything
 --}
+
 {--
 main :: IO ()
 main = do
     putStr "hey "
     putStr "yeab"
 --}
-{-
+
+{--
 main :: IO ()
 main = do 
     putChar 'h'
@@ -95,7 +100,50 @@ main = do
         putChar c
         main
 --}
+{--
 main :: IO ()
 main = do
     myList <- sequence [getLine, getLine, getLine]
     print myList
+--}
+
+-- LET US CABSLOCK ANY NUMBER
+{--
+main :: IO b
+main = forever $ do
+    putStr "give me some number: "
+    l <- getLine
+    putStrLn $ map toUpper l -- cat haiku.txt | ./capslocker  -- this is used to input the output of one program 
+                                                              -- to another program which is called piping
+--}
+
+-- Let us shorten our program
+{--
+main :: IO ()
+main = do 
+    contents <- getContents
+    putStr (map toUpper contents)
+--}
+
+shortLineOnly :: String -> String
+shortLineOnly input = let allLines = lines input
+                          shortLines = filter (\line -> length line < 10) allLines
+                          result = unlines shortLines
+                         in result
+{--
+main :: IO ()
+main = do 
+    contents <- getContents
+    putStr (shortLineOnly contents) -- we can replace this line by (main = interact shortLineOnly)
+--}
+-- Let us do it with another example
+--main = interact respondPalindromes 
+
+respondPalindromes contents = unlines (map (\xs -> if isPalindrome xs then "palindrome" else "not a palindrome") (lines contents))  
+      where   isPalindrome xs = xs == reverse xs  
+
+main = do
+    handle <- openFile "girlfriend.txt" ReadMode
+    contents <- hGetContents handle
+    putStr contents
+    hClose handle
