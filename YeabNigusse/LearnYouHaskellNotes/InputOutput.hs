@@ -1,5 +1,7 @@
 import Data.Char
 import System.IO
+import System.Directory
+import Data.List
 import Control.Monad 
 --HELLO WORLD
 
@@ -142,8 +144,69 @@ main = do
 respondPalindromes contents = unlines (map (\xs -> if isPalindrome xs then "palindrome" else "not a palindrome") (lines contents))  
       where   isPalindrome xs = xs == reverse xs  
 
+{--
+main :: IO ()
 main = do
     handle <- openFile "girlfriend.txt" ReadMode
     contents <- hGetContents handle
     putStr contents
     hClose handle
+--}
+{--
+steps to open and read file 
+    we use openFile to open file with parameter of filepath and IOMode(in this case ReadMode) assigh it to variable
+    then read the contents using hGetContents handle
+    after that we print the content by using putStrLn 
+    finally claose the file
+
+--}
+
+-- LET US DO IT WITHFILE
+{--
+main = do
+    withFile "Yeab.txt" ReadMode (\handle -> do
+        contents <- hGetContents handle
+        putStr contents)
+--}
+{--
+main = do
+    contents <- readFile "Yeab.txt"
+    putStr contents
+--}
+
+{--
+main :: IO ()
+main = do 
+    contents <- readFile "Yeab.txt"
+    putStrLn contents
+    writeFile "YeabCaps.txt" (map toUpper contents)
+    contents <- readFile "YeabCaps.txt"
+    putStr contents
+--}
+--let us append some file to todo.txt
+
+{--main :: IO ()
+main = do 
+    plan <- getLine
+    appendFile "todo.txt" (plan ++ "\n")
+--}
+main :: IO ()
+main = do        
+    handle <- openFile "todo.txt" ReadMode  
+    (tempName, tempHandle) <- openTempFile "." "temp"  
+    contents <- hGetContents handle  
+    let todoTasks = lines contents     
+        numberedTasks = zipWith (\n line -> show n ++ " - " ++ line) [0..] todoTasks     
+    putStrLn "These are your TO-DO items:"  
+    putStr $ unlines numberedTasks  
+    putStrLn "Which one do you want to delete?"     
+    numberString <- getLine     
+    let number = read numberString     
+        newTodoItems = delete (todoTasks !! number) todoTasks     
+    hPutStr tempHandle $ unlines newTodoItems  
+    hClose handle  
+    hClose tempHandle  
+    removeFile "todo.txt"  
+    renameFile tempName "todo.txt"
+
+--Command line arguments
