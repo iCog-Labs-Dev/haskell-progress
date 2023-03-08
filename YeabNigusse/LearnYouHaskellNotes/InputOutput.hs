@@ -1,5 +1,7 @@
 import Data.Char
 import System.IO
+import System.IO.Error
+import System.Environment
 import System.Directory
 import Data.List
 import Control.Monad 
@@ -190,6 +192,7 @@ main = do
     plan <- getLine
     appendFile "todo.txt" (plan ++ "\n")
 --}
+{--
 main :: IO ()
 main = do        
     handle <- openFile "todo.txt" ReadMode  
@@ -208,5 +211,34 @@ main = do
     hClose tempHandle  
     removeFile "todo.txt"  
     renameFile tempName "todo.txt"
+--}
 
 --Command line arguments
+
+-- main = do 
+--     args <- getArgs
+--     progName <- getProgName
+--     putStrLn "The arguments are: "
+--     mapM putStrLn args
+--     putStrLn "the program name is: "
+--     putStrLn progName
+
+--EXCEPTIONS
+{--
+main = do (fileName:_) <- getArgs  
+          fileExists <- doesFileExist fileName  
+          if fileExists  
+              then do contents <- readFile fileName  
+                      putStrLn $ "The file has " ++ show (length (lines contents)) ++ " lines!"  
+              else do putStrLn "The file doesn't exist!"
+--}
+main :: t
+main = toTry `catch` handler  
+              
+toTry :: IO ()  
+toTry = do (fileName:_) <- getArgs  
+           contents <- readFile fileName  
+           putStrLn $ "The file has " ++ show (length (lines contents)) ++ " lines!"  
+  
+handler :: IOError -> IO ()  
+handler e = putStrLn "Whoops, had some trouble!" 
