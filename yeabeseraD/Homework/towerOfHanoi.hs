@@ -2,15 +2,5 @@ type Peg = String
 type Move = (Peg, Peg)
 
 hanoi :: Int -> Peg -> Peg -> Peg -> [Move]
-hanoi n p1 p2 p3 = []
-
-moveDisk :: Int -> [Int]
-moveDisk n
-    | n < head firstPeg = n : firstPeg
-
-first :: Int -> [Int]
-first n 
-    | n < head firstPeg = n : firstPeg
-    | otherwise = firstPeg
-
-firstPeg = [] :: [Int]
+hanoi 0 _ _ _ = []
+hanoi disks source destination auxilary = hanoi (disks-1) source auxilary destination ++ [(source, destination)] ++ hanoi (disks-1) auxilary destination source
