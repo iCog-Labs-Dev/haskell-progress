@@ -10,3 +10,14 @@ skips xs = init $ foldr (\x acc -> getEveryN xs x 0 : acc) [[]] [1..length xs]
                                     then xs !! index : getEveryN xs n (index + 1) 
                                     else getEveryN xs n $ index + 1
             | otherwise = []
+
+localMaxima :: [Integer] -> [Integer]
+localMaxima xs = foldr (\x acc -> if isMaximum x xs then xs !! x : acc else acc) [] [0..length xs - 1]
+    
+    where isMaximum :: Int -> [Integer] -> Bool
+          isMaximum index nums
+            | index-1 < 0 = False
+            | index+1 >= length nums = False
+            | otherwise = nums !! (index - 1) < n && nums !! (index + 1) < n
+            
+            where n = nums !! index
