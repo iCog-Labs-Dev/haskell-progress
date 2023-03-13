@@ -1,3 +1,5 @@
+-- https://exercism.org/tracks/haskell/exercises/binary-search-tree
+
 module BST
     ( BST
     , bstLeft
