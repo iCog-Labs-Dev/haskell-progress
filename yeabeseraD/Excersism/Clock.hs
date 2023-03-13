@@ -1,21 +1,24 @@
 module Clock (addDelta, fromHourMin, toString) where
+import Data.Char (intToDigit)
 
 type Hour = String
 type Mins = String
 
-data Clock = Clock Hour Mins deriving Eq
+data Clock = Clock Hour Mins deriving (Eq, Show)
+
+fixTime ::  Int -> Int -> (Int, Int)
+fixTime hour min = (hour', min')
+  where min' = min `mod` 60
+        hour' = (min `div` 60 + hour) `mod` 24
 
 fromHourMin :: Int -> Int -> Clock
-fromHourMin hour min
-  | validateInput hour min = let (hour', min') = getHourAndMin hour min in Clock (show hour') (show min')
-  | otherwise = error "Negative input detected"
-
-  where validateInput hour min = hour >= 0 && min >=0
-        getHourAndMin hour min = let sec = (hour * 60 + min) * 60; hour' = sec `div` 3600; min' = (sec `mod` 3600) `div` 60
-                                 in (hour', min')                           
+fromHourMin hour min = Clock (show fixedHour) (show fixedMin)
+  where (fixedHour, fixedMin) = fixTime hour min
 
 toString :: Clock -> String
-toString clock = 
+toString (Clock hour min) = paddedHour ++ ":" ++ paddedMin
+  where paddedHour = if length hour == 1 then '0':hour else hour
+        paddedMin = if length min == 1 then '0':min else min
 
 addDelta :: Int -> Int -> Clock -> Clock
-addDelta hour min clock = error "You need to implement this function."
+addDelta hour min (Clock initialHour initialMin) = fromHourMin (read initialHour + hour) (read initialMin + min)
