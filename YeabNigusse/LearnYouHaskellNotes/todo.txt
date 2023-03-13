@@ -1,0 +1,2 @@
+to finish inputoutput 
+start reading chapter 10 from lear you haskell

@@ -1,11 +1,11 @@
 module Prime (nth) where
-import Language.Haskell.TH (prim)
 
 nth :: Int -> Maybe Integer
+nth 0 = Nothing
 nth n = Just (primeNumbers !! (n-1))
 
-primeNumbers :: [Integer]
-primeNumbers = [a | a <- [2..], and $ isPrime a ]
+primeNumbers = [a | a <- [2..], not $ isPrime a]
 
-isPrime :: Integer -> [Bool]
-isPrime a = foldl (\acc x -> (a `mod` x == 0) : acc ) [] [2..(a-1)]
+isPrime x = not $ all (\p -> x `mod` p /= 0) possibleFactors
+    where possibleFactors = takeWhile (\p -> p*p <= x) [2..(x-1)]
+        
