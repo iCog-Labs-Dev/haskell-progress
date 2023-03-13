@@ -2,6 +2,7 @@
 
 module Luhn (isValid) where
 
+
 toDigitsRev :: Integer -> [Integer]
 toDigitsRev n
     | n <= 0 = []
@@ -27,5 +28,22 @@ sumDigits :: [Integer] -> Integer
 sumDigits = sum
 
 
-isValid :: Integer -> Bool
-isValid n = sumDigits (map (sumDigits . toDigits) $ doubleEveryOther $ toDigits n) `mod` 10 == 0
+validate :: Integer -> Bool
+validate n = sumDigits (map (sumDigits . toDigits) $ doubleEveryOther $ toDigits n) `mod` 10 == 0
+
+
+convert :: Integer -> String -> Integer
+convert _ [] = 0
+convert n (' ':xs) = convert n xs
+convert n (x:xs) = (read [x] :: Integer) * (10 ^ n) + convert (n + 1) xs
+
+
+trim :: String -> String
+trim [] = []
+trim x = reverse $ dropWhile (==' ') $ reverse $ dropWhile (==' ') x
+
+
+isValid :: String -> Bool
+isValid card
+    | trim card == "0" = False
+    | otherwise = (validate . convert 0 . reverse . trim) card
