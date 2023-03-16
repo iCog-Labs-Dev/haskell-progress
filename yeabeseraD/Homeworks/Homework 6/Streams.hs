@@ -19,9 +19,7 @@ nats :: Stream Integer
 nats = streamFromSeed (+1) 0
 
 ruler :: Stream Integer
-ruler = streamMap (`dividedByTwo` 0) nats
+ruler = foldr1 interleaveStreams $ streamMap (streamFromSeed (+1)) $ (map Stream  iterate (*2) 2)
 
-dividedByTwo :: Integer -> Integer -> Integer
-dividedByTwo x count
-    | even x = dividedByTwo (x`div`2) count+1
-    | otherwise = count
+interleaveStreams :: Stream a -> Stream a -> Stream a
+interleaveStreams (Stream x xs) ys = Stream x (interleaveStreams xs ys)
