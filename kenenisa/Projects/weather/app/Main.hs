@@ -64,12 +64,12 @@ instance ToJSON Weather where
     toJSON (Weather current location) = object ["current" .= current, "location" .= location]
 
 fromMaybeJSON :: Maybe Weather -> Weather
-fromMaybeJSON Nothing = error "Nothing to show"
+fromMaybeJSON Nothing = error "Nothing to show -> Network or JSON parsing error"
 fromMaybeJSON (Just a) = a
 
 city = name . location
 region = country . location
-getCelsius = show . temp_c . current
+getCelsius = show . temp_c . current 
 getFahrenheit = show . temp_f . current
 mood = text . condition . current
 latestUpdate = last_updated . current
@@ -94,5 +94,5 @@ fetchWeatherData = do
 -- huh
 main :: IO ()
 main = do
-    putStrLn "MENU for Weather app"
+    putStrLn "MENU for Weather app huh"
     fetchWeatherData
