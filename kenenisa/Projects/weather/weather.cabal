@@ -36,5 +36,8 @@ executable weather
         bytestring,
         aeson,
         containers,
+    other-modules: 
+        Methods,
+        Skeleton
     hs-source-dirs:   app
     default-language: Haskell2010
