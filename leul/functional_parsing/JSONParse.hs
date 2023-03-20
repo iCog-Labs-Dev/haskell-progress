@@ -3,6 +3,7 @@ module JSONParse where
 import System.IO ( hGetContents, withFile, IOMode(ReadMode) )
 import Parsing
     ( Alternative((<|>), many), Parser, parse, sat, char, string, int )
+import Data.Char ( isSpace )
 
 
 -- Definitions
@@ -17,6 +18,15 @@ import Parsing
 
 data Value = Null | JString String | Number Double | Boolean Bool | Object [(String, Value)] | Array [Value]
     deriving Show
+
+
+cleanSpace :: Bool -> String -> String
+cleanSpace _ [] = []
+cleanSpace inQuote (x:xs)
+  | x == '"'                 = x : cleanSpace (not inQuote) xs
+  | not inQuote && isSpace x = cleanSpace inQuote xs
+  | otherwise                = x : cleanSpace inQuote xs
+  
 
 
 nonquote :: Parser Char
@@ -98,7 +108,7 @@ main = do putStrLn "Enter json filepath: "
           
           withFile filename ReadMode (
                         \handle -> 
-                            do json <- hGetContents handle                    
+                            do json <- cleanSpace False <$> hGetContents handle                    
                                
                                let parsed = parse object json
                                

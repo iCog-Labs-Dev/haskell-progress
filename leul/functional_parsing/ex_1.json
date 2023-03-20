@@ -1,1 +1,24 @@
-{"Languages":[{"Name":"Haskell","Type system":"Static","Paradigm":"Functional","Year of birth":1990},{"Name":"Python","Type system":"Dynamic","Paradigm":"Object oriented","Year of birth":1991,"Favorite":true},{"Name":"C","Type system":"Static","Paradigm":"Procedural","Year of birth":1969,"Libraries":null}]}
+{
+  "Languages": [
+    {
+      "Name": "Haskell",
+      "Type system": "Static",
+      "Paradigm": "Functional",
+      "Year of birth": 1990
+    },
+    {
+      "Name": "Python",
+      "Type system": "Dynamic",
+      "Paradigm": "Object oriented",
+      "Year of birth": 1991,
+      "Favorite": true
+    },
+    {
+      "Name": "C",
+      "Type system": "Static",
+      "Paradigm": "Procedural",
+      "Year of birth": 1969,
+      "Libraries": null
+    }
+  ]
+}
