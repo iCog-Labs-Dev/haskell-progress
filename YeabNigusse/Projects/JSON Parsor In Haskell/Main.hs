@@ -8,9 +8,10 @@ data JsonValue = JsonNull
                 | JsonObject [(String, JsonValue)] deriving (Show, Eq)-- this are possible values that 
                                                                       -- a string is being parsed
             
-newtype Parsor a = Parsor {runParser :: String -> Maybe (String, a)}{-- a string my be parsed to a some json value with other string that can be chained 
-                                                                         or (no proper error reporting)   --}
-jsonValue :: Parsor JsonValue
+newtype Parsor a = Parsor {runParser :: String -> Maybe (String, a)}{-- a string my be parsed to a some json value with 
+                                                                        other string that can be chained or (no proper error reporting)   --}
+
+jsonValue :: Parsor JsonValue -- 
 jsonValue = undefined
 
 
