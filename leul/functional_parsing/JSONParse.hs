@@ -1,8 +1,10 @@
 module JSONParse where
 
 import System.IO ( hGetContents, withFile, IOMode(ReadMode) )
+
 import Parsing
     ( Alternative((<|>), many), Parser, parse, sat, char, string, int )
+
 import Data.Char ( isSpace )
 
 
