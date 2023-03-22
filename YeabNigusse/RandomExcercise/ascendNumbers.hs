@@ -9,3 +9,6 @@ main = do
 
 toInt :: [String] -> [Int]
 toInt  = map (\x -> read x) 
+
+string = "my string
+is long"
