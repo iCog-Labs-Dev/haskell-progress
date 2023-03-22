@@ -33,7 +33,7 @@ fromList = foldl (flip insert) empty
 insert :: Ord a => a -> BST a -> BST a
 insert x Nil = singleton x
 insert x (Node left a right)
-    | x <= a =Node (insert x left) a right
+    | x <= a = Node (insert x left) a right
     | otherwise =Node left a (insert x right)
 
 singleton :: a -> BST a

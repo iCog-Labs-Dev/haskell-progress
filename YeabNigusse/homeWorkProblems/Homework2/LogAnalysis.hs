@@ -39,8 +39,20 @@ singleton x = Node Leaf x Leaf
 insert :: (Ord LogMessage) => LogMessage -> MessageTree -> MessageTree
 insert x Leaf = singleton x
 insert (LogMessage tp' time' str') (Node left (LogMessage tp time str) right)
-             | tp' == tp = Node left (LogMessage tp' time' str') right
-             | tp' < tp  = Node (insert (LogMessage tp' time' str') left) (LogMessage tp time str) right
-             | tp' > tp = Node left (LogMessage tp time str) (insert (LogMessage tp' time' str') right)
+             | time' == time = Node left (LogMessage tp' time' str') right
+             | time < time'  = Node (insert (LogMessage tp' time' str') left) (LogMessage tp time str) right
+             | time > time' = Node left (LogMessage tp time str) (insert (LogMessage tp' time' str') right)
+insert (Unknown _)  ys = ys
+
+
+
+
+--Excersise 3
+build :: (Ord LogMessage) => [LogMessage] -> MessageTree
+build  = foldr insert Leaf 
+
+-- Excersis 4
+inOrder :: MessageTree -> [LogMessage]
+inOrder = undefined
 
 
