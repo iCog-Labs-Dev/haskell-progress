@@ -44,15 +44,21 @@ insert (LogMessage tp' time' str') (Node left (LogMessage tp time str) right)
              | time > time' = Node left (LogMessage tp time str) (insert (LogMessage tp' time' str') right)
 insert (Unknown _)  ys = ys
 
-
-
-
 --Excersise 3
 build :: (Ord LogMessage) => [LogMessage] -> MessageTree
 build  = foldr insert Leaf 
 
 -- Excersis 4
 inOrder :: MessageTree -> [LogMessage]
-inOrder = undefined
+inOrder Leaf = []
+inOrder (Node left a right) = inOrder left ++ [a] ++ inOrder right
+
+-- Exercise 5
+relevantError :: LogMessage -> LogMessage
+relevantError (LogMessage tp time str)
+              | tp == Error _ && time < 50 = LogMessage tp time str
 
 
+whatWentWrong :: [LogMessage] -> [String]
+whatWentWrong = undefined
+              
