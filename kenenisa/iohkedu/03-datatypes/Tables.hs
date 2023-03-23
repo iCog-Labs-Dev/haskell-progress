@@ -32,8 +32,10 @@ empty = Table []
 --
 -- Re-implement 'insert'.
 
-insert :: k -> v -> Table k v -> Table k v
-insert key value (Table table) = Table ((key,value) : table)
+insert :: (Eq k) => k -> v -> Table k v -> Table k v
+insert key value t@(Table table)
+  | isNothing (lookup key t) = Table ((key,value) : table)
+  | otherwise = insert key value (delete key t)
 
 -- Task Tables-3.
 --
@@ -87,10 +89,10 @@ mapKeys f (Table table) = Table $ keys table
 -- The function 'alter' takes a function and a key.
 
 alter :: Eq k => (Maybe v -> Maybe v) -> k -> Table k v -> Table k v
-alter f key table 
+alter f key table
   | isNothing value = delete key table
   | otherwise = insert key (justValue value) (delete key table)
-    where 
+    where
       value = f $ lookup key table
       justValue (Just v) = v
 
