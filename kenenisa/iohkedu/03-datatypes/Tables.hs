@@ -26,7 +26,7 @@ newtype Table k v = Table [(k, v)]
 -- Re-implement 'empty'.
 
 empty :: Table k v
-empty = []
+empty = Table []
 
 -- Task Tables-2.
 --
