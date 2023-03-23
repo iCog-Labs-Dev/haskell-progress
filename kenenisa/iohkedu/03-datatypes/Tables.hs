@@ -1,6 +1,16 @@
-module Tables where
+module Tables (
+  Table,
+  empty,
+  insert,
+  delete,
+  lookup,
+  mapValues,
+  mapKeys,
+  alter
+) where
 
 import Prelude hiding (lookup)
+import Data.Maybe
 
 -- START HERE AFTER reaching the pointer in Datatypes.hs
 
@@ -16,35 +26,46 @@ newtype Table k v = Table [(k, v)]
 -- Re-implement 'empty'.
 
 empty :: Table k v
-empty = error "TODO: implement empty"
+empty = []
 
 -- Task Tables-2.
 --
 -- Re-implement 'insert'.
 
 insert :: k -> v -> Table k v -> Table k v
-insert = error "TODO: implement insert"
+insert key value (Table table) = Table ((key,value) : table)
 
 -- Task Tables-3.
 --
 -- Re-implement 'delete'.
 
 delete :: Eq k => k -> Table k v -> Table k v
-delete = error "TODO: implement delete"
+delete key (Table table) = Table $ remove table
+  where
+    remove [] = []
+    remove (x:xs)
+      | fst x == key = remove xs
+      | otherwise = x : remove xs
 
 -- Task Tables-4.
 --
 -- Re-implement 'lookup'.
 
 lookup :: Eq k => k -> Table k v -> Maybe v
-lookup = error "TODO: implement lookup"
+lookup _ (Table []) = Nothing
+lookup key (Table (x:xs))
+  | fst x == key = Just $ snd x
+  | otherwise = lookup key (Table xs)
 
 -- Task Tables-5.
 --
 -- Implement a map function on the table values.
 
 mapValues :: (v1 -> v2) -> Table k v1 -> Table k v2
-mapValues = error "TODO: implement mapValues"
+mapValues f (Table table) = Table $ values table
+  where
+    values [] = []
+    values (x:xs) = (fst x, f $ snd x) : values xs
 
 -- Task Tables-6.
 --
@@ -54,8 +75,11 @@ mapValues = error "TODO: implement mapValues"
 -- Can you identify a potential problem with
 -- this function?
 
-mapKeys :: (k1 -> k2) -> Table k1 v -> Table k2 v
-mapKeys = error "TODO: implement mapKeys"
+mapKeys :: (Eq k1,Eq k2) => (k1 -> k2) -> Table k1 v -> Table k2 v
+mapKeys f (Table table) = Table $ keys table
+  where
+    keys [] = []
+    keys (x:xs) = (f $ fst x , snd x) : keys xs
 
 -- Task Tables-7.
 --
@@ -63,7 +87,12 @@ mapKeys = error "TODO: implement mapKeys"
 -- The function 'alter' takes a function and a key.
 
 alter :: Eq k => (Maybe v -> Maybe v) -> k -> Table k v -> Table k v
-alter = error "TODO: implement alter"
+alter f key table 
+  | isNothing value = delete key table
+  | otherwise = insert key (justValue value) (delete key table)
+    where 
+      value = f $ lookup key table
+      justValue (Just v) = v
 
 -- Task Tables-8.
 --
