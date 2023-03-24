@@ -2,7 +2,7 @@
 
 type Peg = String
 type Move = (String, String)
-pr
+
 
 hanoi :: Integer -> Peg -> Peg -> Peg -> [Move]
 hanoi 1 a b c = [(a, b)]
