@@ -19,7 +19,13 @@ nats :: Stream Integer
 nats = streamFromSeed (+1) 0
 
 ruler :: Stream Integer
-ruler = foldr1 interleaveStreams $ streamMap (streamFromSeed (+1)) $ (map Stream  iterate (*2) 2)
+ruler = streamMap (\x -> if odd x then 0 else count2s  x 0) numbers
 
-interleaveStreams :: Stream a -> Stream a -> Stream a
-interleaveStreams (Stream x xs) ys = Stream x (interleaveStreams xs ys)
+numbers :: Stream Integer
+numbers = streamFromSeed (+1) 1
+
+count2s :: Integer -> Integer -> Integer
+count2s 0 acc = acc
+count2s x acc
+            | even x = count2s (x `div` 2) (acc + 1)
+            | otherwise = acc

@@ -25,6 +25,7 @@ testParse :: (String -> [LogMessage])
           -> Int
           -> FilePath
           -> IO [LogMessage]
+          
 testParse parse n file = take n . parse <$> readFile file
 
 -- | @testWhatWentWrong p w f@ tests the log file parser @p@ and

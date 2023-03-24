@@ -33,9 +33,8 @@ library
   ghc-options: -Wall -Wcompat -Widentities -Wincomplete-record-updates -Wincomplete-uni-patterns -Wmissing-export-lists -Wmissing-home-modules -Wpartial-fields -Wredundant-constraints
   build-depends:
       base >=4.7 && <5
-    , binary
-    , bytestring
-    , network
+    , http-types
+    , scotty
   default-language: Haskell2010
 
 executable server-exe
@@ -47,9 +46,8 @@ executable server-exe
   ghc-options: -Wall -Wcompat -Widentities -Wincomplete-record-updates -Wincomplete-uni-patterns -Wmissing-export-lists -Wmissing-home-modules -Wpartial-fields -Wredundant-constraints -threaded -rtsopts -with-rtsopts=-N
   build-depends:
       base >=4.7 && <5
-    , binary
-    , bytestring
-    , network
+    , http-types
+    , scotty
     , server
   default-language: Haskell2010
 
@@ -63,8 +61,7 @@ test-suite server-test
   ghc-options: -Wall -Wcompat -Widentities -Wincomplete-record-updates -Wincomplete-uni-patterns -Wmissing-export-lists -Wmissing-home-modules -Wpartial-fields -Wredundant-constraints -threaded -rtsopts -with-rtsopts=-N
   build-depends:
       base >=4.7 && <5
-    , binary
-    , bytestring
-    , network
+    , http-types
+    , scotty
     , server
   default-language: Haskell2010

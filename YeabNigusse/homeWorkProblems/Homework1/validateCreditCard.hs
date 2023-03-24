@@ -1,5 +1,5 @@
--- this is a collection of a functions to help the varification of credit card 
--- first step convert credit card number into list of numbers by using toDigit Function
+--this is a collection of a functions to help the varification of credit card 
+--first step convert credit card number into list of numbers by using toDigit Function
 
 toDigits :: Integer -> [Integer]
 toDigits 0 = []
