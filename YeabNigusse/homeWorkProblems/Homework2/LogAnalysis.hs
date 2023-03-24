@@ -54,11 +54,13 @@ inOrder Leaf = []
 inOrder (Node left a right) = inOrder left ++ [a] ++ inOrder right
 
 -- Exercise 5
-relevantError :: LogMessage -> LogMessage
-relevantError (LogMessage tp time str)
-              | tp == Error _ && time < 50 = LogMessage tp time str
-
-
+relevantError :: [LogMessage] -> [LogMessage]
+relevantError [] = []
+relevantError ((LogMessage tp time str) : xs)
+                | tp == Error _ && time > 50 = LogMessage tp time str : relevantError xs
+                | otherwise = relevantError xs
+                
 whatWentWrong :: [LogMessage] -> [String]
-whatWentWrong = undefined
+whatWentWrong [] = []
+whatWentWrong ((LogMessage tp time str) : xs) = str : whatWentWrong xs
               
