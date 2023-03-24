@@ -8,3 +8,4 @@ rows a = map row [0 .. a-1]
 factorial :: (Eq t, Num t) => t -> t
 factorial 0 = 1
 factorial n = n*factorial (n-1)
+
