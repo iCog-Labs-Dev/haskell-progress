@@ -26,7 +26,6 @@ numbers = streamFromSeed (+1) 1
 
 count2s :: Integer -> Integer -> Integer
 count2s 0 acc = acc
-count2s 1 acc = acc
 count2s x acc
             | even x = count2s (x `div` 2) (acc + 1)
             | otherwise = acc
