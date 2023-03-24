@@ -2,10 +2,7 @@ import Control.Concurrent
 import Control.Monad (forever)
 
 numberForever :: Int -> IO ()
-numberForever n = do
-    let infiniteNumber = repeat (show n)
-
-    mapM_ putStrLn infiniteNumber
+numberForever n = forever putStrLn (show n)
 
 second :: Int
 second = 1000000
@@ -18,4 +15,4 @@ thread n = forever $ do
 main :: IO ()
 main = do
     mapM_ (forkIO . numberForever) [1..10]
-    threadDelay (5 * second)
+    threadDelay (second * 5)
