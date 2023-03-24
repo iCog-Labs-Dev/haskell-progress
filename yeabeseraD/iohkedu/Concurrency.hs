@@ -15,4 +15,4 @@ thread n = forever $ do
 main :: IO ()
 main = do
     mapM_ (forkIO . numberForever) [1..10]
-    threadDelay (second * 5)
+    threadDelay (second `div` 10)
