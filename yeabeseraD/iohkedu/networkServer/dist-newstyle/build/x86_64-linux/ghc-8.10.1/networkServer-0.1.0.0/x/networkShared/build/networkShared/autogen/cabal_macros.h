@@ -10,6 +10,16 @@
   (major1) == 0 && (major2) <  1 || \
   (major1) == 0 && (major2) == 1 && (minor) <= 0)
 #endif /* MIN_VERSION_networkServer */
+/* package async-2.2.4 */
+#ifndef VERSION_async
+#define VERSION_async "2.2.4"
+#endif /* VERSION_async */
+#ifndef MIN_VERSION_async
+#define MIN_VERSION_async(major1,major2,minor) (\
+  (major1) <  2 || \
+  (major1) == 2 && (major2) <  2 || \
+  (major1) == 2 && (major2) == 2 && (minor) <= 4)
+#endif /* MIN_VERSION_async */
 /* package base-4.14.0.0 */
 #ifndef VERSION_base
 #define VERSION_base "4.14.0.0"

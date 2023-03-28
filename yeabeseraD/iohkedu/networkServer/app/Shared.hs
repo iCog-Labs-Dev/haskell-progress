@@ -4,6 +4,7 @@ import Data.IORef
 import Control.Monad
 import Control.Concurrent
 import Control.Concurrent.STM
+import Control.Concurrent.Async
 import System.Random
 
 main :: IO ()
@@ -11,13 +12,15 @@ main = do
     accounts <- mapM newTVarIO [1000, 2500]
     let numberOfThreads = 100
     total <- getTotal accounts
-    dones <- replicateM numberOfThreads (newTVarIO False)
+    -- dones <- replicateM numberOfThreads (newTVarIO False)
     _ <- forkIO $  monitor accounts total
-    mapM_ (forkIO . randomTransfer accounts) dones
+    asyncs <- replicateM numberOfThreads (async $ randomTransfer accounts)
+    mapM_ wait asyncs
+    -- mapM_ (forkIO . randomTransfer accounts) dones
     
-    atomically $ do
-        bs <- mapM readTVar dones
-        unless (and bs) retry
+    -- atomically $ do
+    --     bs <- mapM readTVar dones
+    --     unless (and bs) retry
 
 thread :: IORef Int -> Int -> IO ()
 thread ref n = forever $ do 
@@ -50,14 +53,22 @@ transfer from to amount = do
             modifyTVar to (+    amount)
             return $ putStrLn $ "Transferred " ++ show amount
 
-randomTransfer :: [Account] -> TVar Bool -> IO ()
-randomTransfer accounts done = do
+randomTransfer :: [Account] -> IO ()
+randomTransfer accounts = do
     let n = length accounts
     from <- randomRIO (0, n-1)
     to <- randomRIO (0, n-1)
     amount <- randomRIO (1,1000)
     join $ atomically $ transfer (accounts !! from) (accounts !! to) amount
-    atomically $ writeTVar done True
+
+-- randomTransfer :: [Account] -> TVar Bool -> IO ()
+-- randomTransfer accounts done = do
+--     let n = length accounts
+--     from <- randomRIO (0, n-1)
+--     to <- randomRIO (0, n-1)
+--     amount <- randomRIO (1,1000)
+--     join $ atomically $ transfer (accounts !! from) (accounts !! to) amount
+--     atomically $ writeTVar done True
 
 
 
