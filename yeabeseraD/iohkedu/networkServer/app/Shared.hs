@@ -9,10 +9,15 @@ import System.Random
 main :: IO ()
 main = do
     accounts <- mapM newTVarIO [1000, 2500]
+    let numberOfThreads = 100
     total <- getTotal accounts
+    dones <- replicateM numberOfThreads (newTVarIO False)
     _ <- forkIO $  monitor accounts total
-    replicateM_ 100000 (randomTransfer accounts)
-    threadDelay 5000000
+    mapM_ (forkIO . randomTransfer accounts) dones
+    
+    atomically $ do
+        bs <- mapM readTVar dones
+        unless (and bs) retry
 
 thread :: IORef Int -> Int -> IO ()
 thread ref n = forever $ do 
@@ -45,13 +50,14 @@ transfer from to amount = do
             modifyTVar to (+    amount)
             return $ putStrLn $ "Transferred " ++ show amount
 
-randomTransfer :: [Account] -> IO ()
-randomTransfer accounts = do
+randomTransfer :: [Account] -> TVar Bool -> IO ()
+randomTransfer accounts done = do
     let n = length accounts
     from <- randomRIO (0, n-1)
     to <- randomRIO (0, n-1)
     amount <- randomRIO (1,1000)
     join $ atomically $ transfer (accounts !! from) (accounts !! to) amount
+    atomically $ writeTVar done True
 
 
 
