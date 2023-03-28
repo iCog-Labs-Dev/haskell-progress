@@ -5,6 +5,7 @@ import Control.Concurrent
 import Data.Char
 import Control.Monad
 import System.IO
+import System.IO.Error
 
 main :: IO ()
 main = do
@@ -17,7 +18,8 @@ main = do
 handleClient :: Handle -> IO ()
 handleClient h = do
     hSetBuffering h LineBuffering
-    forever $ do
-        l <- hGetLine h
-        hPutStrLn h (map toUpper l)
+    catchIOError (forever $ do
+            l <- hGetLine h
+            hPutStrLn h (map toUpper l))
+            (\e -> putStrLn $ "Something went wrong: \n\t " ++ show e ++ "\n I'm out of here.")
 
