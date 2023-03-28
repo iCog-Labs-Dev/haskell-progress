@@ -14,8 +14,9 @@ main = do
     total <- getTotal accounts
     -- dones <- replicateM numberOfThreads (newTVarIO False)
     _ <- forkIO $  monitor accounts total
-    asyncs <- replicateM numberOfThreads (async $ randomTransfer accounts)
-    mapM_ wait asyncs
+    replicateConcurrently_ numberOfThreads (randomTransfer accounts)
+    -- asyncs <- replicateM numberOfThreads (async $ randomTransfer accounts)
+    -- mapM_ wait asyncs
     -- mapM_ (forkIO . randomTransfer accounts) dones
     
     -- atomically $ do
