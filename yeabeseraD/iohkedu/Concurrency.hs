@@ -2,7 +2,7 @@ import Control.Concurrent
 import Control.Monad (forever)
 
 numberForever :: Int -> IO ()
-numberForever n = forever putStrLn (show n)
+numberForever = forever . print
 
 second :: Int
 second = 1000000
@@ -15,4 +15,4 @@ thread n = forever $ do
 main :: IO ()
 main = do
     mapM_ (forkIO . numberForever) [1..10]
-    threadDelay (second `div` 10)
+    threadDelay (second * 5) 
