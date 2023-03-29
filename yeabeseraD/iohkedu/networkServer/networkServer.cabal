@@ -14,8 +14,10 @@ common warnings
 executable networkServer
     import:           warnings
     main-is:          Main.hs
-    build-depends:    base ^>=4.14.0.0
+    build-depends:    async
+                    , base ^>=4.14.0.0
                     , network == 2.6.3.6
+                    , stm
     hs-source-dirs:   app
     default-language: Haskell2010
     ghc-options: -Wall -threaded
