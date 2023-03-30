@@ -3,43 +3,41 @@ module Main where
 import Network
 import Control.Concurrent
 import Control.Concurrent.STM
+import Control.Concurrent.Async
 import Control.Monad
 import System.IO
 
 main :: IO ()
 main = do
     s <- listenOn $ PortNumber 8657
-    conns <- newTVarIO []
-    void $ forkIO $ monitor 0 conns
+    conns <- newTVarIO 0
+    bch <- newBroadcastTChanIO
+    void $ forkIO $ monitor 0 conns bch
     putStrLn "Listening on port number 8657..."
     forever $ do
         (h, n, p) <- accept s
         putStrLn $ "accepted hostname: " ++ n ++ " on portnumber: "++ show p
-        forkFinally (handleClient h conns) $
+        forkFinally (handleClient h conns bch) $
             const $ do
-                atomically $ modifyTVar conns (filter (/=h))
+                atomically $ modifyTVar conns pred
                 hClose h
 
-handleClient :: Handle -> TVar [Handle] -> IO ()
-handleClient h conns = do
+handleClient :: Handle -> TVar Int -> TChan Int -> IO ()
+handleClient h conns bch = do
     hSetBuffering h LineBuffering
-    atomically $ modifyTVar conns (h:)
-    forever $ do
-            _ <- hGetLine h
-            handles <- readTVarIO conns
-            let clients = length handles
-            hPrint h clients
+    atomically $ modifyTVar conns succ
+    ch <- atomically $ dupTChan bch
+    forever (void $ hGetLine h) `race_` forever (atomically (readTChan ch) >>= hPrint h)
 
-monitor :: Int -> TVar [Handle] -> IO ()
-monitor oldCount conns = do
+monitor :: Int -> TVar Int -> TChan Int -> IO ()
+monitor oldCount conns bch = do
     newCount <- atomically $ do
-        hs <- readTVar conns
-        let c = length hs
-        if c == oldCount
+        currentCount <- readTVar conns
+        if currentCount == oldCount
             then retry
-            else return c
+            else do
+                writeTChan bch currentCount
+                return currentCount
     
-    hs <- readTVarIO conns
-    mapM_ (`hPrint` newCount) hs
-    monitor newCount conns
+    monitor newCount conns bch
 
