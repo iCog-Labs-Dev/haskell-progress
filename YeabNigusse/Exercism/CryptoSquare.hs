@@ -7,6 +7,8 @@ encode xs = transposit (toString (onlyAlpha xs) (length (onlyAlpha xs)))
 onlyAlpha :: String -> String
 onlyAlpha str = map toLower (filter (\x -> isAlpha x || isDigit x) str) 
 
+
+
 toString :: String -> Int -> [String]
 toString [] _ = []
 toString str len = let r = floor (sqrt (fromIntegral len))
