@@ -3,8 +3,7 @@
 
 import Data.List
 
-toint :: String -> Int
-toint x = read x ::Int
+
 
 findMultiple :: Int -> Int -> Int -> Int
 findMultiple _ 0 _ = 0
@@ -14,7 +13,7 @@ findMultiple n i x
 
 main :: IO ()
 main = do
-  [n,x] <- fmap (map toint . words) getLine
+  [n,x] <- fmap (map (\x->read x ::Int) . words) getLine
   if n*n < x then do
     print 0
   else do
