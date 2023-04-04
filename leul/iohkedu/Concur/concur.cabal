@@ -5,10 +5,25 @@ author:             Leul Wujira
 maintainer:         meraf000@gmail.com
 extra-source-files: CHANGELOG.md
 
-executable concur
+executable Concurrency
+    main-is:          Concurrency.hs
+    build-depends:    base ^>=4.16.4.0                      
+    hs-source-dirs:   app
+    default-language: Haskell2010
+    ghc-options:      -threaded -with-rtsopts=-N
+
+executable Server
     main-is:          Main.hs
     build-depends:    base ^>=4.16.4.0,
                       network
     hs-source-dirs:   app
     default-language: Haskell2010
-    ghc-options:      -threaded -with-rtsopts=-N
+    ghc-options:      -Wall -threaded -with-rtsopts=-N
+
+executable Client
+    main-is:          Main.hs
+    build-depends:    base ^>=4.16.4.0,
+                      network
+    hs-source-dirs:   app
+    default-language: Haskell2010
+    ghc-options:      -Wall -threaded -with-rtsopts=-N

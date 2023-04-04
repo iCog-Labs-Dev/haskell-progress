@@ -2,7 +2,6 @@ module Main (main) where
 
 import Control.Concurrent
 import Control.Monad (forever)
-import Network.Socket
 
 seconds :: Int
 seconds = 1000000
