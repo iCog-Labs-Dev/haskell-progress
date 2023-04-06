@@ -13,10 +13,12 @@ import Prelude hiding
   ( length, reverse, map, filter, foldr, (++), concat )
 
 foldl' :: (b -> a -> b) -> b -> [a] -> b
-foldl' f z xs = error "You need to implement this function."
+foldl' _ z [] = z
+foldl' f z (x:xs) = foldl f (f z x) xs
 
 foldr :: (a -> b -> b) -> b -> [a] -> b
-foldr f z xs = error "You need to implement this function."
+foldr f z [] = z
+foldr f z (x:xs) = f x (foldr f z xs) 
 
 length :: [a] -> Int
 length xs = sum [1| _ <- xs]
@@ -38,8 +40,7 @@ filter p (x:xs)
 (++) :: [a] -> [a] -> [a]
 xs ++ [] = xs
 [] ++ ys = ys
-xs ++ ys = error "You need to implement this function."
+xs ++ ys = xs ++ ys
 
 concat :: [[a]] -> [a]
-concat [[]] = []
-concat (xs:xss) = xs ++ concat xss
+concat xs = foldr (\x acc -> x ++ acc) [] xs
