@@ -1,0 +1,20 @@
+cabal-version:   3.0
+name:            MonadExcersise
+version:         0.1.0.0
+license:         MIT
+license-file:    LICENSE
+author:          Yagth
+maintainer:      yabuman46@gmail.com
+build-type:      Simple
+extra-doc-files: CHANGELOG.md
+
+common warnings
+    ghc-options: -Wall
+
+library
+    import:           warnings
+    exposed-modules:  MyLib
+    build-depends:    base ^>=4.16.4.0
+                    , containers
+    hs-source-dirs:   src
+    default-language: Haskell2010
