@@ -16,5 +16,7 @@ isAsc [x] = True
 isAsc (x:y:xs) = if x >= y then False else isAsc xs
 
 hasPath :: [(Int, Int)] -> Int -> Int -> Bool
-hasPath [] _ _ = False
-hasPath list x y = 
+hasPath [] x y = x == y
+hasPath list x y 
+           | x == y = True
+           | otherwise = let xs = [(n,m) | (n,m) <- list, n /= x] in or [hasPath xs m y | (n,m) <- list , n == x]
