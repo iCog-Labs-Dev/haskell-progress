@@ -20,3 +20,5 @@ hasPath [] x y = x == y
 hasPath list x y 
            | x == y = True
            | otherwise = let xs = [(n,m) | (n,m) <- list, n /= x] in or [hasPath xs m y | (n,m) <- list , n == x]
+
+
