@@ -2,6 +2,7 @@
 {-# HLINT ignore "Use tuple-section" #-}
 module MyLib where
 
+import Data.Map(Map)
 import qualified Data.Map as M
 import Control.Monad
 
@@ -18,6 +19,20 @@ addressMapping =
       (MkAddress 9, MkAddress 5),
       (MkAddress 16, MkAddress 9)
     ]
+newtype ErrorMessage = AddressNotFound Address deriving Show
+
+lookup' :: Address -> Map Address a -> Either ErrorMessage a
+lookup' address mapping=
+    case M.lookup address  mapping of
+        Nothing -> Left (AddressNotFound address)
+        Just value -> Right value
+
+threeHopes' :: Address -> Either ErrorMessage String
+threeHopes' address0 = do
+    address1 <- lookup' address0 addressMapping
+    address2 <- lookup' address1 addressMapping
+    address3 <- lookup' address2 addressMapping
+    Right $ show address3
 
 threeHopes :: Address -> Maybe String
 threeHopes address0 = do
