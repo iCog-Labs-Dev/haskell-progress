@@ -39,4 +39,7 @@ safeInit lst
 splitWith :: (a -> Bool) -> [a] -> [[a]]
 splitWith p lst = filter p lst : filter (not . p) lst : []
 
+asInt_fold :: String -> Int
+asInt_fold str = _
+
 
