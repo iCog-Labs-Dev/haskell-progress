@@ -23,7 +23,6 @@ fun2' n = sum (takeWhile (/=0) $ iterate (`div` 2) n ) + fun2' (3*foldr
 --Exercise 2: Folding with trees
 
 
-
 -- Excersise 3 More folds!
 
 xor :: [Bool] -> Bool
