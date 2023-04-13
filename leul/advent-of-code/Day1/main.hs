@@ -31,7 +31,7 @@ toMoves direction (x : xs) = (newDirection, snd step) : next
     step = parseStep x
     newDirection = case fst step of
       'R' -> bearings !! ((fromJust (elemIndex direction bearings) + 1) `mod` 4)
-      'L' -> bearings !! ((fromJust (elemIndex direction bearings) - 1) `mod` 4)     
+      'L' -> bearings !! ((fromJust (elemIndex direction bearings) - 1) `mod` 4)
     next = toMoves newDirection xs
 
 move :: Coord -> [Move] -> Coord
@@ -44,10 +44,29 @@ move (x, y) ((d, s) : xs)
 
 distance :: Coord -> Int
 distance (x, y) = abs x + abs y
-  
-  
+
+moveTrackSeen :: Coord -> [Coord] -> [Move] -> Coord
+moveTrackSeen coord _ [] = coord
+moveTrackSeen (x, y) seenCoords ((d, s) : xs) =
+  if any (`elem` seenCoords) (path (x, y) d)
+    then head $ filter (`elem` seenCoords) (path (x, y) d)
+    else moveTrackSeen (newCoord (x, y) d) (path (x, y) d ++ (x, y):seenCoords) xs
+  where
+    path (x, y) d
+      | d == 'N' = [(x, visitedY) | visitedY <- reverse [y - s, y - s + 1 .. y - 1]]
+      | d == 'S' = [(x, visitedY) | visitedY <- [y + 1 .. y + s]]
+      | d == 'E' = [(visitedX, y) | visitedX <- [x + 1 .. x + s]]
+      | d == 'W' = [(visitedX, y) | visitedX <-reverse [x - s, x - s + 1 .. x - 1]]
+    newCoord (x, y) d
+      | d == 'N' = (x, y - s)
+      | d == 'S' = (x, y + s)
+      | d == 'E' = (x + s, y)
+      | d == 'W' = (x - s, y)
+
 main :: IO ()
 main = do
-    print $ toMoves 'N' $ split input
-    print $ move (0, 0) (toMoves 'N' $ split input)
-    print $ distance $ move (0, 0) (toMoves 'N' $ split input)
+  print $ toMoves 'N' $ split input
+  print $ move (0, 0) (toMoves 'N' $ split input)
+  print $ distance $ move (0, 0) (toMoves 'N' $ split input)
+  print $ moveTrackSeen (0, 0) [] (toMoves 'N' $ split input)
+  print $ distance $ moveTrackSeen (0, 0) [] (toMoves 'N' $ split input)
