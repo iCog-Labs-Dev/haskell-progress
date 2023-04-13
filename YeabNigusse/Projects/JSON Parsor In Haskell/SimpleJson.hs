@@ -10,6 +10,9 @@ Jvalue(..) -- visible functions and data types of this module
 , isNull
 ) where
 
+data Doc = ToBeDefined
+           deriving (Show)
+
 data Jvalue = JString String -- we are making our own data type by using primitive data types which is Json value
               | JNumber Double
               | JBool Bool  
@@ -47,3 +50,11 @@ getArray _ = Nothing
 isNull :: Jvalue -> Bool
 isNull v = v == JNull
 
+string :: String -> Doc
+string str = undefined
+
+text :: String -> Doc
+text str = undefined
+
+double :: Double -> Doc
+double num = undefined
