@@ -9,5 +9,7 @@ intoPlaindrom xs = xs ++ reverse xs
 
 isPalindrom xs = xs == reverse xs
 
-intersperse :: a -> [[a]] -> [a]
-intersperse y (x:xs) = x ++ [y] ++ intersperse xs 
+-- intersperse :: a -> [[a]] -> [a]
+-- intersperse y (x:xs) = x ++ [y] ++ intersperse xs
+
+reverse' xs = foldl (\acc x -> x : acc) [] xs
