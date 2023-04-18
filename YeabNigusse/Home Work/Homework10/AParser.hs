@@ -83,14 +83,43 @@ instance Applicative Parser where
 abParser :: Parser (Char, Char)
 abParser = (,) <$> char 'a' <*> char 'b'
 
+-- *AParser> runParser abParser "abcdef"
+-- Just (('a','b'),"cdef")
+-- *AParser> runParser abParser "aebcdf"
+-- Nothing
+
+
 abParser_ :: Parser ()
 abParser_ = mempty <$> char 'a' <*> char 'b'
+
+-- *AParser> runParser abParser_ "abcdef"
+-- Just ((),"cdef")
+-- *AParser> runParser abParser_ "aebcdf"
+-- Nothing
+
 
 intPair :: Parser [Integer]
 intPair =  (\a _ b -> [a,b]) <$> posInt <*> char ' ' <*> posInt
 
 -- Excersise 4
+instance Alternative Parser where
+  empty :: Parser a
+  empty = Parser $ \_ -> Nothing
+  (<|>) :: Parser a -> Parser a -> Parser a
+  (Parser p1) <|> (Parser p2) = Parser $ \input -> p1 input <|> p2 input
 
+--Exercise 5
+
+intOrUppercase :: Parser ()
+intOrUppercase = mempty <$> satisfy isUpper <|> posInt -- i want to find out what happened here
+
+-- *Parser> runParser intOrUppercase "342abcd"
+-- Just ((), "abcd")
+-- *Parser> runParser intOrUppercase "XYZ"
+-- Just ((), "YZ")
+-- *Parser> runParser intOrUppercase "foo"
+-- Nothing
+        
 
 
 
