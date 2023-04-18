@@ -57,3 +57,42 @@ posInt = Parser f
 ------------------------------------------------------------
 -- Your code goes below here
 ------------------------------------------------------------
+
+-- Excercise 1
+
+instance Functor Parser where
+  fmap :: (a -> b) -> Parser a -> Parser b
+  fmap f (Parser p) =  Parser $ \input -> do-- this is a mission imposible for finding a
+             (x, input') <- p input
+             Just (f x, input')
+
+-- Excersise 2
+
+instance Applicative Parser where
+      pure :: a -> Parser a
+      pure a = Parser $ \input -> Just (a, input)
+      (<*>) :: Parser (a -> b) -> Parser a -> Parser b
+      (Parser p1) <*> (Parser p2) = 
+        Parser $ \input -> do
+        (f, input') <- p1 input
+        (a, input'') <- p2 input'
+        Just (f a , input'')
+
+-- Excersise 3
+
+abParser :: Parser (Char, Char)
+abParser = (,) <$> char 'a' <*> char 'b'
+
+abParser_ :: Parser ()
+abParser_ = mempty <$> char 'a' <*> char 'b'
+
+intPair :: Parser [Integer]
+intPair =  (\a _ b -> [a,b]) <$> posInt <*> char ' ' <*> posInt
+
+-- Excersise 4
+
+
+
+
+
+        

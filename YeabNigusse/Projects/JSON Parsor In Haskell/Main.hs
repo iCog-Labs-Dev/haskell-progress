@@ -16,16 +16,19 @@ newtype Parser a = Parser
 
 instance Functor Parser where
     fmap f (Parser p) = Parser $ \input -> do--to be applicative Parser should be a Functor type class
-        (input', x) <- p input               -- making Parser an instance of Parser type class
+        (input', x) <- p input               -- making Parser an instance of functor type class
         Just (input' , f x)
 
 instance Applicative Parser where
+    pure :: a -> Parser a
+    (<*>) :: Parser (a -> b) -> Parser a -> Parser b
     pure x = Parser $ \input -> Just (input, x)
     (Parser p1) <*> (Parser p2) = -- to chain the result of each Parser type the parser should implement 
         Parser $ \input -> do     -- Applicatives
          (input', f) <- p1 input
          (input'', a) <- p2 input'
          Just (input'', f a)
+         
 instance Alternative Parser where
     empty = Parser $ \_ -> Nothing  -- this is for JsonBool Parser type to use the true and false interchangebly 
     (Parser p1) <|> (Parser p2) =
