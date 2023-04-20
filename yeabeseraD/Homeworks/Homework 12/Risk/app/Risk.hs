@@ -32,12 +32,13 @@ data Battlefield = Battlefield { attackers :: Army, defenders :: Army }
 
 
 battle :: Battlefield -> Rand StdGen Battlefield
-battle battlefield = return $ Battlefield atts' dfs'
-  where atts            = attackers battlefield
-        dfs             = defenders battlefield
-        (atts', dfs')   = decideSubtract attacks defences (atts, dfs)
-        attacks         = runIdentity $ evalRandT (fmap unDV <$> replicateM (allowedAttack atts) die) g
-        defences        = runIdentity $ evalRandT (fmap unDV <$>  replicateM (allowedDefend dfs)  die) (runIdentity $ evalRandT getSplit g)
+battle bf = undefined
+  -- return $ bf atts' dfs'
+  where atts            = attackers bf
+        dfs             = defenders bf
+        -- (atts', dfs')   = decideSubtract attacks defences (atts, dfs)
+        attacks         = replicateM (allowedAttack atts) die
+        defences        = replicateM (allowedDefend dfs)  die
 
 invade :: Battlefield -> Rand StdGen Battlefield
 invade bf@(Battlefield atts defs)
