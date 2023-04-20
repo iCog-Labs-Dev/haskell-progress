@@ -2,9 +2,9 @@ module DNA (toRNA) where
 
 toRNA :: String -> Either Char String
 toRNA [] = Right []
-toRNA xs
-    | any (`notElem` "GCTA") xs = Left (head (filter (`notElem` "GCTA") xs))
-    | otherwise = Right (map change xs)
+toRNA (x:xs)
+    | x `notElem` "GCTA" = Left x
+    | otherwise = Right (map change (x:xs))
 
 change :: Char -> Char
 change 'G' = 'C'
