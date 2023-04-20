@@ -30,26 +30,6 @@
   (major1) == 4 && (major2) <  16 || \
   (major1) == 4 && (major2) == 16 && (minor) <= 4)
 #endif /* MIN_VERSION_base */
-/* package base-compat-0.13.0 */
-#ifndef VERSION_base_compat
-#define VERSION_base_compat "0.13.0"
-#endif /* VERSION_base_compat */
-#ifndef MIN_VERSION_base_compat
-#define MIN_VERSION_base_compat(major1,major2,minor) (\
-  (major1) <  0 || \
-  (major1) == 0 && (major2) <  13 || \
-  (major1) == 0 && (major2) == 13 && (minor) <= 0)
-#endif /* MIN_VERSION_base_compat */
-/* package transformers-0.5.6.2 */
-#ifndef VERSION_transformers
-#define VERSION_transformers "0.5.6.2"
-#endif /* VERSION_transformers */
-#ifndef MIN_VERSION_transformers
-#define MIN_VERSION_transformers(major1,major2,minor) (\
-  (major1) <  0 || \
-  (major1) == 0 && (major2) <  5 || \
-  (major1) == 0 && (major2) == 5 && (minor) <= 6)
-#endif /* MIN_VERSION_transformers */
 
 /* tool alex-3.2.5 */
 #ifndef TOOL_VERSION_alex
