@@ -18,6 +18,7 @@ newtype Parser a = Parser { runParser :: String -> Maybe (a, String) }
 -- parser which succeeds only if it sees a Char that satisfies the
 -- predicate (which it then returns).  If it encounters a Char that
 -- does not satisfy the predicate (or an empty input), it fails.
+
 satisfy :: (Char -> Bool) -> Parser Char
 satisfy p = Parser f
   where
@@ -110,8 +111,8 @@ instance Alternative Parser where
 
 --Exercise 5
 
-intOrUppercase :: Parser ()
-intOrUppercase = mempty <$> satisfy isUpper <|> posInt -- i want to find out what happened here
+-- intOrUppercase :: Parser ()
+-- intOrUppercase = mempty <$> satisfy isUpper <|> posInt -- i want to find out what happened here
 
 -- *Parser> runParser intOrUppercase "342abcd"
 -- Just ((), "abcd")
@@ -120,8 +121,26 @@ intOrUppercase = mempty <$> satisfy isUpper <|> posInt -- i want to find out wha
 -- *Parser> runParser intOrUppercase "foo"
 -- Nothing
         
+-- ABOUT SIDE EFFECTS
+
+-- FUNCTIONS THAT INTERACT WITH THE OUTSIDE WORLD(INPUT OUTPUT, NETWORK ACESS, SYSTEM ACCESS etc) usually
+-- HAVE SIDE EFFECTS(THEY DO SOMETHING TO THE OUTSIDE WORLD RATHER THAN BEING INSIDE THE PROGRAMM)
+-- THEY GIVE DIFFERENT OUTPUT FOR THE SAME INPUT OR CALL(e.g RANDOM, CURRENT_TIME, GLOBAL_FUNC -FUNCTIONS)
 
 
+-- ABOUT FUNCTORS
+
+-- SOMETHING TO BE A FUNCTOR INSTANCE IT SHOLD IMPLEMENT FMAP FUNCTION WHICH MAPS A FUNCTION INTO A FUNCTOR
+-- OR FMAP IS A FUNCTION THAT RETURN A LIFTED FUNCTION WHICH LIFT UP A FUNCTOR
+-- (e.g) IO, MAYBE, PARSER -> LET US WRITE THEM EVEN IF THEY ARE ALREDY IMPLEMENTED
 
 
-        
+instance Functor IO where
+  fmap f action = do
+    content <- action
+    return (f content)
+
+instance Functor Maybe where
+  fmap f Nothing = Nothing
+  fmap f (Just a) = Just (f a)
+
