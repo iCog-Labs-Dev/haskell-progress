@@ -4,8 +4,7 @@ module Risk where
 
 import Control.Monad.Random
 import Data.List
-import Data.Traversable (Traversable(..))
-
+import Data.Functor.Identity
 ------------------------------------------------------------
 -- Die values
 
@@ -19,11 +18,6 @@ instance Random DieValue where
   random           = first DV . randomR (1,6)
   randomR (low,hi) = first DV . randomR (max 1 (unDV low), min 6 (unDV hi))
 
-instance Traversable (RandT g) where 
-  traverse f (RandT m) = RandT $ do 
-    x <- m
-    lift $ traverse f x
-
 die :: Rand StdGen DieValue
 die = getRandom
 
@@ -31,51 +25,54 @@ die = getRandom
 -- Risk
 
 type Army = Int
+type Attacker  = Int
+type Defender = Int
 
 data Battlefield = Battlefield { attackers :: Army, defenders :: Army }
 
 
-
 battle :: Battlefield -> Rand StdGen Battlefield
-battle battlefield = undefined
-  -- Battlefield $ maximum $ unDV <$> atts
-  where attsArmy   = attackers battlefield
-        dfsArmy    = defenders battlefield
-        atts       = replicate (allowedAttack attsArmy) die
-        dfs        = replicate (allowedDefend dfsArmy)  die
-        sortedDfs  = sort <$> randsToInts dfs
-        sortedAtts = sort <$> randsToInts atts
+battle battlefield = return $ Battlefield atts' dfs'
+  where atts            = attackers battlefield
+        dfs             = defenders battlefield
+        (atts', dfs')   = decideSubtract attacks defences (atts, dfs)
+        attacks         = runIdentity $ evalRandT (fmap unDV <$> replicateM (allowedAttack atts) die) g
+        defences        = runIdentity $ evalRandT (fmap unDV <$>  replicateM (allowedDefend dfs)  die) (runIdentity $ evalRandT getSplit g)
 
-randsToInts :: [Rand StdGen DieValue] -> Rand StdGen [Int]
-randsToInts rands = fmap unDV <$> sequence rands
+invade :: Battlefield -> Rand StdGen Battlefield
+invade bf@(Battlefield atts defs)
+  | atts < 2  = return bf
+  | defs == 0 = return bf
+  | otherwise = battle bf >>= invade
 
-type Attacker = Int
-type Defender = Int
+successProb :: Battlefield -> Rand StdGen Double
+successProb bf = do
+  results <-replicateM 1000 (invade bf)
+  let wins = length $ filter id $ map (\bf -> attackers bf > 1) results
+      prob = fromIntegral wins / 1000.0
+  return prob
 
-decideWinner ::Rand StdGen [Int] -> Rand StdGen [Int] -> (Attacker , Defender) -> (Attacker, Defender)
-decideWinner atts dfs (attackers, defenders)
-  | null attsModified && null dfsModified = (attackers, defenders)
-  | null attsModified                     = decideWinner atts restDfs (attackers - 1, defenders)
-  | null dfsModified                      = decideWinner restAtts dfs (attackers, defenders)
-  | (head <$> atts) > (head <$> dfs)      = decideWinner restAtts restDfs (attackers, defenders - 1)
-  | otherwise                             = decideWinner restAtts restDfs (attackers - 1, defenders)
-  where restDfs = tail <$> dfs
-        restAtts = tail <$> atts
-        attsModified = undefined
-
-        dfsModified :: [Rand StdGen Int]
-        dfsModified  = do
-          xs <- dfs
-          let temp = map return xs
-          return temp
-
--- battlefield = Battlefield {attackers=10, defenders = 5}
--- dfsArmy  = defenders battlefield
--- dfs      = replicate (allowed dfsArmy)  die
--- temp = fmap unDV <$> sequence dfs
+decideSubtract :: [Attacker] -> [Defender] -> (Attacker, Defender) -> (Attacker, Defender)
+decideSubtract attacks defends (atts, defs)
+  | null attacks && null defends  = (atts, defs)
+  | null attacks                  = decideSubtract attacks restDefs  (atts - 1, defs)
+  | null defends                  = decideSubtract restAtts defends  (atts, defs - 1)
+  | head attacks' > head defends' = decideSubtract restAtts restDefs (atts, defs - 1)
+  | otherwise                     = decideSubtract restAtts restDefs (atts - 1, defs)
+  where attacks' = (reverse . sort) attacks
+        defends' = (reverse . sort) defends
+        restDefs = tail defends'
+        restAtts = tail attacks'
 
 allowedAttack :: Army -> Int
 allowedAttack available | available < 3 =  available| available == 3 = 2 | otherwise = 3
 
 allowedDefend :: Army -> Int
 allowedDefend available | available <=2 =  available | otherwise = 3
+
+battlefield = Battlefield {attackers=10, defenders = 5}
+-- dfsArmy  = defenders battlefield
+-- dfs      = replicate (allowed dfsArmy)  die
+-- temp = fmap unDV <$> sequence dfs
+-- defences = runIdentity $ evalRandT (fmap unDV <$>  replicateM 3 die)  (runIdentity $ evalRandT getSplit g)
+-- attacks  = runIdentity $ evalRandT (fmap unDV <$>  replicateM 3 die) g
