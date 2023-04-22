@@ -30,14 +30,15 @@ nextLevel emp guestList= (bestListWithBoss, bestListWithNoBoss)
           bestListWithNoBoss = bestGuestList guestList
           bestGuestList = foldl (\acc (withBoss, withNoBoss) -> moreFun acc $ moreFun withBoss withNoBoss) mempty
 
+nextLevel' :: Employee -> [(GuestList, GuestList)] -> [(GuestList, GuestList)]
+nextLevel' emp guestLists = [nextLevel emp guestLists]
+
+maxFun :: Tree Employee -> (GuestList,GuestList)
+maxFun campTree = mconcat result
+    where result                    = treeFold nextLevel' [mempty, mempty] campTree
+          nextLevel' emp guestLists = [nextLevel emp guestLists]
+
 fmap' :: Employee -> (GuestList, GuestList) -> (GuestList, GuestList)
 fmap' emp (withBoss, withNoBoss) = (glCons emp withBoss, glCons emp withNoBoss)
 
-maxFun :: Tree Employee -> GuestList
-maxFun campTree = mempty
-    where result = treeFold nextLevel' mempty campTree
-          nextLevel' emp guestLists = [nextLevel emp guestLists]
-
-nextLevel' :: Employee -> [(GuestList, GuestList)] -> [(GuestList, GuestList)]
-nextLevel' emp guestLists = [nextLevel emp guestLists]
           
