@@ -12,9 +12,8 @@ getSize (Size i) = i
 class Sized a where
   size :: a -> Size
 
-instance Sized Size where
-  size = id
-
+instance Semigroup Size where
+  (<>) = (+)  
 -- This instance means that things like
 --   (Foo, Size)
 --   (Foo, (Bar, Size))
@@ -25,4 +24,3 @@ instance Sized b => Sized (a,b) where
 
 instance Monoid Size where
   mempty  = Size 0
-  mappend = (+)
