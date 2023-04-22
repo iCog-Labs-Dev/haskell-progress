@@ -33,12 +33,10 @@ nextLevel emp guestList= (bestListWithBoss, bestListWithNoBoss)
 nextLevel' :: Employee -> [(GuestList, GuestList)] -> [(GuestList, GuestList)]
 nextLevel' emp guestLists = [nextLevel emp guestLists]
 
-maxFun :: Tree Employee -> (GuestList,GuestList)
-maxFun campTree = mconcat result
-    where result                    = treeFold nextLevel' [mempty, mempty] campTree
+maxFun :: Tree Employee -> GuestList
+maxFun campTree = moreFun withBoss withNoBoss
+    where (withBoss, withNoBoss)                    = mconcat $ treeFold nextLevel' [mempty, mempty] campTree
           nextLevel' emp guestLists = [nextLevel emp guestLists]
 
 fmap' :: Employee -> (GuestList, GuestList) -> (GuestList, GuestList)
 fmap' emp (withBoss, withNoBoss) = (glCons emp withBoss, glCons emp withNoBoss)
-
-          
