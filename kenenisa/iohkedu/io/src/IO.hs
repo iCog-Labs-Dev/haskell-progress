@@ -7,11 +7,10 @@ module IO where
 import Prelude hiding (readLn)
 import Control.Monad (liftM)
 import Data.Char
-import Data.IP
-import Network       (HostName, PortID)
-import Network.DNS
+-- import Data.IP
+-- import Network       (HostName, PortID)
+-- import Network.DNS
 import System.IO
-
 
 -- Task IO-1.
 --
@@ -49,7 +48,7 @@ unsafeReadInt = read
 -- Nothing
 --
 readInt :: String -> Maybe Int
-readInt = error "TODO: implement readInt"
+readInt = readMaybe
 
 -- Task IO-3.
 --
@@ -60,7 +59,8 @@ readInt = error "TODO: implement readInt"
 -- Hint: Use 'liftM'.
 
 readLnMaybe :: Read a => IO (Maybe a)
-readLnMaybe = error "TODO: implement readLnMaybe"
+readLnMaybe = do
+  liftM readMaybe getLine
 
 -- Task IO-4.
 --
@@ -84,7 +84,12 @@ readLnMaybe = error "TODO: implement readLnMaybe"
 -- remember that strings are lists of characters.
 
 sumTwo :: IO ()
-sumTwo = error "TODO: define sumTwo"
+sumTwo = do
+  printLn "Please enter first number: "
+  f <- readLnMaybe
+  printLn "Please enter second number: "
+  s <- readLnMaybe
+  print $ f + s 
 
 -- Task IO-5.
 --
@@ -93,7 +98,7 @@ sumTwo = error "TODO: define sumTwo"
 -- the results in a list of n elements.
 
 replicateM :: Int -> IO a -> IO [a]
-replicateM = error "TODO: define replicateM"
+replicateM n ac = ac >>= (replicate n) 
 
 -- Task IO-6.
 --
@@ -340,4 +345,4 @@ googleNameServer :: FileOrNumericHost
 googleNameServer = RCHostName "8.8.8.8"
 
 dnsTest :: IO (Either DNSError [IPv4])
-dnsTest = error "TODO: define dnsTest" 
+dnsTest = error "TODO: define dnsTest"
