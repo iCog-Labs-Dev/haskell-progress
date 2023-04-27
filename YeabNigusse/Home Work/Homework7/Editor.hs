@@ -35,7 +35,7 @@ commands = map show [View, Edit, Next, Prev, Quit]
 -- Editor monad
 
 newtype Editor b a = Editor (StateT (b,Int) IO a)
-  deriving (Functor, Monad, MonadIO, MonadState (b,Int))
+  deriving (Functor, Monad,Applicative, MonadIO, MonadState (b,Int))
 
 runEditor :: Buffer b => Editor b a -> b -> IO a
 runEditor (Editor e) b = evalStateT e (b,0)
@@ -144,3 +144,22 @@ modCurLine f = do
   l  <- getCurLine
   nl <- onBuffer numLines
   setCurLine . max 0 . min (nl - 1) $ f l
+
+-- ABOUT MONOIDS
+
+-- ITS IS A BINERY FUNCTION THAT TAKE TWO PARAMETERS AND GIVES A RESULT OF THE SAME TYPE AS THE PARAMETERS
+-- THEY FOLLOW THE RULE OF IDENTYTY AND ASSCOCIATIVITY 
+-- WE SHOULD IMPLEMENT 3 FUNCTIONS TO MAKE OWR TYPE TO BE A MONOID TYPE CLASS INSTANCE OF 
+-- THEY ARE MEMPTY, MAPPEND AND MCONCAT
+-- MEMPTY REPRESENT AN IDENTITY ELEMENT FOR A PRTICULAR MONOID
+-- MAPPEND IS A BINERY FUNCTION THAT TAKE TWO PARAMETERS AND APPEND THEM INTO ONE
+-- mconcat -> It takes a list of monoid values and reduces them to a single value by doing mappend between the list's elements
+
+
+-- ABOUT FOLDS
+
+-- THEY REDUCE LIST OF SOME TYPE INTO A SINGLE VALUE OF THAT TYPE 
+-- THEY TAKE A FUNCTION, STARTING VALUE AND THE LIST AS A PRAMETER
+-- THE RETURNING VALUE OF THE FOLD HAVE THE SAME TYPE OF THE STARTING VALUE()
+
+
