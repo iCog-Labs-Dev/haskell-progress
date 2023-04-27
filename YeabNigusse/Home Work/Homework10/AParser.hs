@@ -1,7 +1,3 @@
-{- CIS 194 HW 10
-   due Monday, 1 April
--}
-
 module AParser where
 
 import           Control.Applicative
@@ -111,8 +107,8 @@ instance Alternative Parser where
 
 --Exercise 5
 
--- intOrUppercase :: Parser ()
--- intOrUppercase = mempty <$> satisfy isUpper <|> posInt -- i want to find out what happened here
+intOrUppercase :: Parser ()
+intOrUppercase =  -- i want to find out what happened here
 
 -- *Parser> runParser intOrUppercase "342abcd"
 -- Just ((), "abcd")
