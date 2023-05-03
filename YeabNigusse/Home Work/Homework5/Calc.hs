@@ -18,8 +18,8 @@ class Expr a where
     lit :: Integer -> a
     add :: a -> a -> a
     mul :: a -> a -> a
-
-
+-- NOTE- ALWAYS START WITH CLASS NAME AND SOME VARIABLE(LATTER REPLACED BY DATA TYPE)
+-- ALL CALSS SHOULD HAVE SOME METHOD(FUNCTION) FOR WHICH OTHER DATA TYPES IMPLEMENT THEM LATTER
 instance Expr ExprT where
     lit :: Integer -> ExprT
     lit x = Lit x
