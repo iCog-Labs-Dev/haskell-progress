@@ -110,6 +110,7 @@ instance Alternative Parser where
 intOrUppercase :: Parser ()
 intOrUppercase =  -- i want to find out what happened here
 
+
 -- *Parser> runParser intOrUppercase "342abcd"
 -- Just ((), "abcd")
 -- *Parser> runParser intOrUppercase "XYZ"
