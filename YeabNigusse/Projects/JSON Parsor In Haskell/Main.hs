@@ -119,3 +119,69 @@ parserFile fileName parser= do   -- used to test the parser from the file
     
 main :: IO ()
 main = undefined
+
+
+-- FUNCTORS APPLICATION OVER A FUNCTION
+-- INCREASE CODE REUSABILITY
+
+maybeInc :: Maybe Int -> Maybe Int
+maybeInc Nothing = Nothing
+maybeInc (Just x) = Just (x + 1)
+
+listInc :: [Int] -> [Int]
+listInc [] = []
+listInc (x:xs) = (x+1) : listInc xs
+
+data Tree a = Leaf a | Node a (Tree a) (Tree a)
+
+treeInc :: (Num a) => Tree a -> Tree a
+treeInc (Leaf a) = Leaf (a+1)
+treeInc (Node a l r) = Node (a+1) (treeInc l) (treeInc r)
+
+-- since we can define the above data types as an instance of Functor typeclass we can use inc function for each of them
+inc :: Functor f => f Int -> f Int
+inc = fmap (+1)
+
+
+-- MONADS
+data Expr = Val Int | Div Expr Expr
+
+eval :: Expr -> Int
+eval (Val n) = n
+eval (Div x y) = eval x `div` eval y
+
+safediv :: Int -> Int -> Maybe Int
+safediv _ 0 = Nothing
+safediv n m = Just (n `div` m)
+
+eval' :: Expr -> Maybe Int
+eval' (Val n) = Just n
+eval' (Div x y) = case eval' x of
+        Nothing -> Nothing
+        Just n -> case eval' y of
+              Nothing -> Nothing
+              Just m -> safediv n m
+
+type Time = Int
+
+data Yeab a = Fellowship a | Class a | Work a | Internship a | Other a | UC a
+
+
+-- GOAL - to make Yeab's time an instance of functors, applicative and monad
+
+instance Functor Yeab where
+    fmap f (Fellowship a) = Fellowship (f a)
+    fmap f (Class a) = Class (f a)
+    fmap f (Work a) = Work (f a)
+    fmap f (Internship a) = Internship (f a)
+    fmap f (Other a) = Other (f a)
+
+instance Applicative Yeab where
+    pure = UC
+    Class a <*> Class b = fmap a (Class b)
+
+    
+
+
+
+          

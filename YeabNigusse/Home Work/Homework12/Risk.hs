@@ -28,5 +28,6 @@ type Army = Int
 data Battlefield = Battlefield { attackers :: Army, defenders :: Army }
 
 
+
 -- RANDOMS ABOUT MONADS
 -- 
