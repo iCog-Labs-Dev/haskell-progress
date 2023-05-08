@@ -123,17 +123,19 @@ main = undefined
 
 -- FUNCTORS APPLICATION OVER A FUNCTION
 -- INCREASE CODE REUSABILITY
-
+-- INTHE MAYBE CASE YOU ALWAYS FIND X TO APPLIE SOME FUNCTION ON IT
+-- ABSTRUCT THAT FINDING AND FOCUS ONLY ON WHAT YOUR FUNCTION DOES INTO X
 maybeInc :: Maybe Int -> Maybe Int
 maybeInc Nothing = Nothing
-maybeInc (Just x) = Just (x + 1)
+maybeInc (Just x) = Just (x + 1)-- (X-1) (X*X) (X/2)
 
 listInc :: [Int] -> [Int]
 listInc [] = []
 listInc (x:xs) = (x+1) : listInc xs
 
 data Tree a = Leaf a | Node a (Tree a) (Tree a)
-
+-- THE SAME AS FOR TREE, WE NEED TO ACCESS A TO APPLIE SOME FUNCTION
+-- ABSTRUCT THE PROCESS OF NAVIGATING INTO A BY MAKING TREE FUNCTOR TYPECLASS AND FOCUS ONLY ON YOUR FUNCTION
 treeInc :: (Num a) => Tree a -> Tree a
 treeInc (Leaf a) = Leaf (a+1)
 treeInc (Node a l r) = Node (a+1) (treeInc l) (treeInc r)

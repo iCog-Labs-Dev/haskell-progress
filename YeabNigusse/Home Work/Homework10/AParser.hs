@@ -59,7 +59,7 @@ posInt = Parser f
 
 instance Functor Parser where
   fmap :: (a -> b) -> Parser a -> Parser b
-  fmap f (Parser p) =  Parser $ \input -> do-- this is a mission imposible for finding a
+  fmap f (Parser p) =  Parser $ \input -> do-- this is a mission imposible for finding(penetrating and entering) a
              (x, input') <- p input
              Just (f x, input')
 
@@ -108,7 +108,7 @@ instance Alternative Parser where
 --Exercise 5
 
 intOrUppercase :: Parser ()
-intOrUppercase =  -- i want to find out what happened here
+intOrUppercase =  undefined-- i want to find out what happened here
 
 
 -- *Parser> runParser intOrUppercase "342abcd"
@@ -131,13 +131,4 @@ intOrUppercase =  -- i want to find out what happened here
 -- OR FMAP IS A FUNCTION THAT RETURN A LIFTED FUNCTION WHICH LIFT UP A FUNCTOR
 -- (e.g) IO, MAYBE, PARSER -> LET US WRITE THEM EVEN IF THEY ARE ALREDY IMPLEMENTED
 
-
-instance Functor IO where
-  fmap f action = do
-    content <- action
-    return (f content)
-
-instance Functor Maybe where
-  fmap f Nothing = Nothing
-  fmap f (Just a) = Just (f a)
 
