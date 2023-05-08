@@ -144,6 +144,12 @@ treeInc (Node a l r) = Node (a+1) (treeInc l) (treeInc r)
 inc :: Functor f => f Int -> f Int
 inc = fmap (+1)
 
+instance Functor Tree where
+    fmap f (Leaf a)= Leaf (f a)
+    fmap f (Node a l r) = Node (f a) (fmap f l) (fmap f r)
+
+treeInc2 ::   (Num a) => Tree a -> Tree a
+treeInc2 = fmap (+1)
 
 -- MONADS
 data Expr = Val Int | Div Expr Expr
@@ -182,8 +188,13 @@ instance Applicative Yeab where
     pure = UC
     Class a <*> Class b = fmap a (Class b)
 
-    
+-- APPLICATIVES 
+-- WHAT IF, IF WE WANT TO APPLIE MULTI-PARAMETRIZED FUNCTION INTO A FUNCTORS
+-- THE FMAP SHOLD BE REDEFINED EACH TIME THE PARAMETER IS CHANGED
+-- THAT CREAT MULTIPLE FMAP FUNCTION AND IT IS NOT EFFICENT
+-- SO WE SHOLD ABSTRUCT FMAP WITH MULTIPLE PARAMETER FUNCTORS
 
+-- BY USING THE CONCEPT OF CURRING WE CAN APPLIE FUNCTION SEQUENCIALLY INTO FUNCTORS
 
 
           

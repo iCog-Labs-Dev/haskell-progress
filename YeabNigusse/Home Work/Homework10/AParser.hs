@@ -132,3 +132,12 @@ intOrUppercase =  undefined-- i want to find out what happened here
 -- (e.g) IO, MAYBE, PARSER -> LET US WRITE THEM EVEN IF THEY ARE ALREDY IMPLEMENTED
 
 
+data Expr a = Var a | Val Int | Add (Expr a) (Expr a)
+                            deriving Show 
+
+instance Functor Expr where
+  fmap :: (a -> b) -> Expr a -> Expr b
+  fmap f (Var a) = Var (f a)
+  fmap f (Add l r) = Add (fmap f l) (fmap f r) 
+  fmap f (Val x) = Val ( _ x)
+
