@@ -5,10 +5,15 @@ main = do
     n <- getLine
     putStrLn "enter numbers"
     numbers <- sequence (replicate (read n) getLine)
-    print (toInt numbers)
+    print (toInt numbers) 
 
 toInt :: [String] -> [Int]
 toInt  = map (\x -> read x) 
 
-string = "my string
-is long"
+sorted :: [Int] -> [Int]
+sorted [] = []
+sorted [x] = [x]
+sorted (x:xs) = let smaller = [a | a <- xs, a <= x]
+                    bigger = [a | a <- xs, a > x]
+                    in sorted smaller ++ [x] ++ sorted bigger
+

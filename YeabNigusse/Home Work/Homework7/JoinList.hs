@@ -33,8 +33,8 @@ _ !!? i | i < 0 = Nothing
 (x:xs) !!? i = xs !!? (i-1)
 
 
-dropJ :: (Sized b, Monoid b) => Int -> JoinList b a -> JoinList b a
-dropJ = drop n (jlToList jl)
+-- dropJ :: (Sized b, Monoid b) => Int -> JoinList b a -> JoinList b a
+-- dropJ = drop n (jlToList jl)
 
 -- jlToList (dropJ n jl) == drop n (jlToList jl)
 

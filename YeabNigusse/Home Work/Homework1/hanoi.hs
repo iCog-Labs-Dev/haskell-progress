@@ -16,7 +16,7 @@ type Move = (Peg, Peg)
 --}
 
 
-hanoi :: Integer -> Peg -> Peg -> Peg -> [Move] 
+hanoi :: Integer -> Peg -> Peg -> Peg -> [Move]
 hanoi 0 _ _ _ = []
 hanoi n src dest aux = hanoi (n-1) src aux dest ++ [(src, dest)] ++ hanoi (n-1) aux dest src
            
